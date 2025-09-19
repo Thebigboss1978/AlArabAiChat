@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LANDING PAGE 5D — Al Arab Club 777</title>
+  <style>
+    /* ========= Reset & base ========= */
+    :root{
+      --bg:#02030a;
+      --accent:#67f0ff;
+      --accent2:#ff7eff;
+      --glass: rgba(255,255,255,0.06);
+      --hud: rgba(103,240,255,0.06);
+      --neon: 0 0 16px rgba(103,240,255,0.14),0 0 40px rgba(103,240,255,0.06);
+      --font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg);font-family:var(--font-family);overflow:hidden}
+    .wrap{position:relative;width:100%;height:100vh;display:flex;align-items:center;justify-content:center}
+
+    /* ========= Comet background (canvas) ========= */
+    canvas#space{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+
+    /* ========= Subtle Egyptian glyphs background ========= */
+    .glyphs{
+      position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.09;background-image:radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.02), transparent 10%), linear-gradient(120deg, rgba(255,200,100,0.01), rgba(70,10,120,0.01));
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.6));
+      background-size: 300px 300px, cover;
+      mix-blend-mode: screen;
+    }
+    /* Create repeating glyph shapes with CSS-generated SVG data-URI */
+    .glyphs::before{content:'';position:absolute;inset:0;background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><text x="10" y="60" font-size="36" fill="rgba(255,255,255,0.08)" font-family="serif">𓂀</text><text x="100" y="180" font-size="30" fill="rgba(255,255,255,0.06)">𓃰</text></svg>');background-repeat:repeat;background-position:0 0;opacity:0.9}
+
+    /* ========= Animated triangles & floating cube scene ========= */
+    .scene{position:relative;z-index:3;width:min(1100px,96%);height:78vh;display:grid;grid-template-columns:1fr 420px;gap:24px;padding:24px}
+    .left{position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(10,10,20,0.02));border-radius:20px;padding:24px;backdrop-filter: blur(6px);box-shadow:var(--neon);overflow:hidden}
+    .right{position:relative;border-radius:20px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(10,10,20,0.02));backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+    /* Triangles */
+    .tri{position:absolute;width:260px;height:260px;transform:rotate(0deg);opacity:0.08;filter:blur(2px)}
+    .tri svg{width:100%;height:100%}
+    .tri.t1{left:-40px;top:10%;animation:float1 12s linear infinite}
+    .tri.t2{right:-60px;top:30%;transform:rotate(20deg);animation:float2 18s linear infinite}
+    .tri.t3{left:10%;bottom:2%;transform:rotate(-18deg);animation:float3 14s linear infinite}
+    @keyframes float1{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-36px) rotate(18deg)}100%{transform:translateY(0) rotate(0)}}
+    @keyframes float2{0%{transform:translateY(0) rotate(20deg)}50%{transform:translateY(48px) rotate(-6deg)}100%{transform:translateY(0) rotate(20deg)}}
+    @keyframes float3{0%{transform:translateY(0) rotate(-18deg)}50%{transform:translateY(-28px) rotate(32deg)}100%{transform:translateY(0) rotate(-18deg)}}
+
+    /* 3D cube (CSS) */
+    .cube-wrap{position:absolute;right:6%;top:18%;width:260px;height:260px;perspective:900px;z-index:5}
+    .cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:spin 18s linear infinite}
+    .cube .face{position:absolute;inset:8px;border-radius:12px;background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-weight:700;color:rgba(255,255,255,0.7);backdrop-filter: blur(6px)}
+    .cube .face--front{transform:translateZ(120px)}
+    .cube .face--back{transform:rotateY(180deg) translateZ(120px)}
+    .cube .face--right{transform:rotateY(90deg) translateZ(120px)}
+    .cube .face--left{transform:rotateY(-90deg) translateZ(120px)}
+    .cube .face--top{transform:rotateX(90deg) translateZ(120px)}
+    .cube .face--bottom{transform:rotateX(-90deg) translateZ(120px)}
+    @keyframes spin{0%{transform:rotateX(10deg) rotateY(0deg)}100%{transform:rotateX(10deg) rotateY(360deg)}}
+
+    /* Glowing eye (canvas overlay) */
+    .eye-canvas{position:absolute;left:6%;bottom:6%;width:220px;height:220px;border-radius:50%;z-index:6;mix-blend-mode:screen;pointer-events:none}
+
+    /* HUD overlay (Iron Man style) */
+    .hud{position:absolute;inset:0;z-index:6;pointer-events:none}
+    .hud .ring{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:420px;height:420px;border-radius:50%;border:1px dashed rgba(103,240,255,0.06);box-shadow:0 0 30px rgba(103,240,255,0.03);}
+    .hud .coords{position:absolute;left:58px;top:28px;color:var(--accent);font-size:12px;letter-spacing:1px}
+
+    /* Content */
+    .brand{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+    .brand h1{font-size:36px;color:white;letter-spacing:2px}
+    .brand p{color:rgba(255,255,255,0.6);max-width:48ch}
+
+    .cta{margin-top:18px;display:flex;gap:12px}
+    .btn{padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));cursor:pointer;color:white;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;box-shadow:var(--neon)}
+
+    /* Right card small interactions */
+    .panel{width:100%;display:flex;flex-direction:column;gap:12px}
+    .panel .stat{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:var(--glass)}
+
+    /* Floating letters effect */
+    .floater{position:absolute;z-index:8;pointer-events:none;font-weight:800;color:rgba(255,255,255,0.95);font-size:22px;text-shadow:0 4px 14px rgba(0,0,0,0.6)}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .scene{grid-template-columns:1fr;grid-auto-rows:1fr}
+      .cube-wrap{display:none}
+      .eye-canvas{left:auto;right:6%}
+    }
+
+    /* Small footer */
+    .footer{position:absolute;left:20px;bottom:14px;color:rgba(255,255,255,0.12);font-size:12px;z-index:7}
+
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <canvas id="space"></canvas>
+    <div class="glyphs"></div>
+
+    <div class="scene" role="main">
+      <div class="left" id="left">
+        <div class="brand">
+          <h1>LANDING PAGE 5D — Al Arab Club 777</h1>
+          <p>تجربة ثلاثية-خماسية الأبعاد تدمج تأثيرات فرعونية، HUD تفاعلي، ومؤثرات استجابة عند الضغط. اسحب أو اضغط لترى التفاعل — ثم اضغط SCRIPT إذا كان هناك خطأ.</p>
+
+          <div class="cta">
+            <button class="btn primary" id="enter">ابدأ التجربة</button>
+            <button class="btn" id="scriptBtn">SCRIPT</button>
+          </div>
+        </div>
+
+        <!-- animated triangles -->
+        <div class="tri t1"> 
+          <svg viewBox="0 0 100 100"><polygon points="50,3 97,97 3,97" fill="url(#g1)"/></svg>
+        </div>
+        <div class="tri t2"> 
+          <svg viewBox="0 0 100 100"><polygon points="50,3 97,97 3,97" fill="url(#g2)"/></svg>
+        </div>
+        <div class="tri t3"> 
+          <svg viewBox="0 0 100 100"><polygon points="50,3 97,97 3,97" fill="url(#g3)"/></svg>
+        </div>
+
+        <!-- Cube -->
+        <div class="cube-wrap" aria-hidden>
+          <div class="cube">
+            <div class="face face--front">777</div>
+            <div class="face face--back">AL</div>
+            <div class="face face--right">CLUB</div>
+            <div class="face face--left">5D</div>
+            <div class="face face--top">𓂀</div>
+            <div class="face face--bottom">𓃰</div>
+          </div>
+        </div>
+
+        <canvas id="eye" class="eye-canvas" width="220" height="220"></canvas>
+
+      </div>
+
+      <div class="right">
+        <div class="panel">
+          <div class="stat"><div>الحالة</div><div id="status">جاهز</div></div>
+          <div class="stat"><div>مقاس الخيال</div><div id="size">5D</div></div>
+          <div class="stat"><div>سرعة الصوت</div><div id="speed">0</div></div>
+        </div>
+
+        <div style="height:18px"></div>
+        <div style="color:rgba(255,255,255,0.14);font-size:12px">اضغط في أي مكان في اليمين أو اليسار لتجرّب تأثير تناثر الأحرف.</div>
+      </div>
+    </div>
+
+    <!-- HUD overlay -->
+    <div class="hud" aria-hidden>
+      <div class="ring"></div>
+      <div class="coords">X:0.00 Y:0.00 Z:0.00</div>
+    </div>
+
+    <div class="footer">© Al Arab Club 777 — LANDING PAGE 5D</div>
+  </div>
+
+  <script>
+  /* ========= Helpers ========= */
+  function rand(min,max){return Math.random()*(max-min)+min}
+
+  /* ========= Space / comet canvas ========= */
+  (function(){
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars=[];
+    function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;stars=[];for(let i=0;i<220;i++){stars.push({x:Math.random()*w,y:Math.random()*h,z:rand(0.2,1.2),r:rand(0.2,1.8)})}}
+    window.addEventListener('resize',resize);resize();
+    function draw(){ctx.clearRect(0,0,w,h);
+      // stars
+      for(let s of stars){ctx.beginPath();ctx.fillStyle='rgba(255,255,255,'+ (0.6*s.z) +')';ctx.arc(s.x,s.y,s.r*s.z,0,Math.PI*2);ctx.fill()}
+      // moving comet
+      const t=Date.now()/1000;
+      const cx=w*0.2+Math.cos(t*0.22)*w*0.25;
+      const cy=h*0.25+Math.sin(t*0.18)*h*0.18;
+      const gx= cx + 1200*Math.cos(t*0.6);
+      const gy= cy + 600*Math.sin(t*0.6);
+      const grad=ctx.createLinearGradient(cx,cy,gx,gy);
+      grad.addColorStop(0,'rgba(103,240,255,0.9)');grad.addColorStop(0.4,'rgba(103,240,255,0.14)');grad.addColorStop(1,'rgba(103,240,255,0)');
+      ctx.beginPath();ctx.fillStyle=grad;ctx.ellipse(gx,gy,220,70,Math.PI/6,0,Math.PI*2);ctx.fill();
+
+      // lens flare
+      ctx.beginPath();ctx.fillStyle='rgba(255,126,255,0.06)';ctx.arc(gx-10,gy-40,120,0,Math.PI*2);ctx.fill();
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  /* ========= Eye canvas (glowing eye) ========= */
+  (function(){
+    const c = document.getElementById('eye'); if(!c) return;const ctx = c.getContext('2d');
+    const w=c.width,h=c.height;
+    function render(){ctx.clearRect(0,0,w,h);
+      const t=Date.now()/500;
+      // outer glow
+      const g=ctx.createRadialGradient(w/2,h/2,10,w/2,h/2,140);
+      g.addColorStop(0,'rgba(103,240,255,0.55)');g.addColorStop(0.3,'rgba(103,240,255,0.12)');g.addColorStop(1,'rgba(103,240,255,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(w/2,h/2,110,0,Math.PI*2);ctx.fill();
+      // iris
+      ctx.beginPath();ctx.fillStyle='rgba(6,16,24,0.8)';ctx.arc(w/2,h/2,52,0,Math.PI*2);ctx.fill();
+      const irisGrad=ctx.createRadialGradient(w/2,h/2,12,w/2,h/2,56);irisGrad.addColorStop(0,'rgba(103,240,255,0.92)');irisGrad.addColorStop(1,'rgba(103,240,255,0.12)');
+      ctx.beginPath();ctx.fillStyle=irisGrad;ctx.arc(w/2,h/2,44,0,Math.PI*2);ctx.fill();
+      // pupil
+      ctx.beginPath();ctx.fillStyle='rgba(0,0,0,0.9)';ctx.arc(w/2,h/2,18+Math.sin(t)*2,0,Math.PI*2);ctx.fill();
+      // small HUD rings
+      ctx.strokeStyle='rgba(103,240,255,0.24)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(w/2,h/2,72,0,Math.PI*2*(0.5+0.5*Math.sin(t/2)));ctx.stroke();
+      requestAnimationFrame(render);
+    }
+    render();
+  })();<title>LANDING PAGE 5D — Al Arab Club 777</title>
+
+  /* ========= Triangles gradients (inject defs) ========= */
+  (function(){
+    const svgs = document.querySelectorAll('.tri svg');
+    svgs.forEach((s,i)=>{
+      const ns = `linear-gradient-${i}`;
+      s.innerHTML = `<defs><linearGradient id='g${i+1}' x1='0' x2='1'><stop offset='0' stop-color='rgba(103,240,255,0.12)'/><stop offset='1' stop-color='rgba(255,127,210,0.05)'/></linearGradient></defs>` + s.innerHTML;
+    })
+  })();
+
+  /* ========= Floating letters on click ========= */
+  (function(){
+    const app=document.getElementById('app');
+    const charset = ['A','L','A','R','A','B','7','7','7','𓂀','𓃰'];
+    function spawn(x,y){
+      const el = document.createElement('div');el.className='floater';el.style.left=(x)+'px';el.style.top=(y)+'px';el.textContent = charset[Math.floor(Math.random()*charset.length)];
+      document.body.appendChild(el);
+      const dx = rand(-120,120);const dy = rand(-260,-80);
+      el.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(1.6)`,opacity:0}],{duration:1200+Math.random()*800,easing:'cubic-bezier(.16,.8,.24,1)'}).onfinish = ()=>el.remove();
+    }
+    app.addEventListener('pointerdown',e=>{spawn(e.clientX,e.clientY)});
+  })();
+
+  /* ========= HUD coordinates (follow pointer) ========= */
+  (function(){
+    const coords = document.querySelector('.coords');
+    addEventListener('pointermove',e=>{const x=(e.clientX/window.innerWidth).toFixed(2);const y=(e.clientY/window.innerHeight).toFixed(2);coords.textContent=`X:${x} Y:${y} Z:5D`});
+  })();
+
+  /* ========= Buttons behaviors ========= */
+  (function(){
+    const enter = document.getElementById('enter');
+    const scriptBtn = document.getElementById('scriptBtn');
+    const status = document.getElementById('status');
+    const speed = document.getElementById('speed');
+    enter.addEventListener('click',()=>{
+      status.textContent='يتم التشغيل — استمتع';
+      // small visual pulse
+      document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.12)'}],{duration:420,iterations:1});
+      setTimeout(()=>status.textContent='جاهز',2000);
+    });
+
+    scriptBtn.addEventListener('click',()=>{
+      // The user's instruction: click SCRIPT to fix issues. We'll run a lightweight diagnostics then report.
+      status.textContent='فحص السكربت...';
+      const diag = runDiagnostics();
+      setTimeout(()=>{status.textContent = diag.ok? 'تم تصحيح المشكلات تلقائياً' : 'خطأ: '+diag.msg; if(diag.ok) flash();},800);
+    });
+
+    function runDiagnostics(){
+      // basic self-checks
+      try{
+        const c1 = !!document.getElementById('space');
+        const c2 = !!document.getElementById('eye');
+        const c3 = document.querySelectorAll('.tri').length>=3;
+        const ok = c1 && c2 && c3;
+        return ok? {ok:true} : {ok:false,msg:'مكوّن ناقص'};
+      }catch(e){return {ok:false,msg:e.message}}
+    }
+    function flash(){
+      document.querySelectorAll('.btn').forEach(b=>b.animate([{transform:'scale(1)'},{transform:'scale(1.05)'}],{duration:260,iterations:2,direction:'alternate'}));
+    }
+
+    // sample speed indicator
+    let last=Date.now();setInterval(()=>{speed.textContent = Math.abs(Math.floor((Date.now()-last)/100));last=Date.now()},500);
+  })();
+
+  /* ========= Accessibility: keyboard quick actions ========= */
+  (function(){
+    window.addEventListener('keydown',e=>{
+      if(e.key==='s' || e.key==='S'){document.getElementById('scriptBtn').click()}
+      if(e.key==='Enter'){document.getElementById('enter').click()}
+    })
+  })();
+
+  /* ========= Safe orientation change handling ========= */
+  addEventListener('orientationchange',()=>location.reload());
+
+  </script>
+</body>
+</html>

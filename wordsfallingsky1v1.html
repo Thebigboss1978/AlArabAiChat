@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>خلفية الكلمات الذهبية المتساقطة</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      width: 100%;
+      background: black;
+      overflow: hidden;
+      font-family: monospace;
+      color: gold;
+      position: relative;
+    }
+
+    /* الطبقة الخلفية للكلمات الذهبية */
+    #golden-fall {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: 0.35; /* ترانسبيرنسي حوالي 35% */
+      z-index: 0;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .falling-word {
+      position: absolute;
+      top: -2em;
+      color: gold;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.8);
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-2em);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    <style>
+  /* طبقة فوق كل شيء تقريبا */
+  #sparkles-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10; /* فوق طبقة الكلمات */
+    overflow: visible;
+  }
+  
+  .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #fff9c4 0%, #ffeb3b 60%, transparent 90%);
+    border-radius: 50%;
+    opacity: 0;
+    animation-name: sparkle-flash;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes sparkle-flash {
+    0%, 100% {opacity: 0;}
+    50% {opacity: 1;}
+  }
+</style>
+
+<div id="sparkles-container"></div>
+
+<script>
+  const sparklesContainer = document.getElementById('sparkles-container');
+  const sparkleCount = 20; // عدد الشرارات اللي تظهر
+
+  function createSparkle(index) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+
+    // توزيع عشوائي على الشاشة
+    sparkle.style.top = Math.random() * 100 + 'vh';
+    sparkle.style.left = Math.random() * 100 + 'vw';
+
+    // مدة الوميض (بين 1 و 3 ثواني)
+    const duration = 1 + Math.random() * 2;
+    sparkle.style.animationDuration = duration + 's';
+
+    // بداية متأخرة عشوائية عشان التزامن غير منتظم
+    sparkle.style.animationDelay = (Math.random() * 10) + 's';
+
+    sparklesContainer.appendChild(sparkle);
+  }
+
+  for(let i=0; i < sparkleCount; i++) {
+    createSparkle(i);
+  }
+</script>
+
+  </style>
+</head>
+<body>
+  <div id="golden-fall"></div>
+
+  <script>
+    const words = ["𓂀", "𓆣", "𓁹", "WELCOME", "LOVE", "ANCIENT", "PEACE", "ENERGY", "777", "AI", "ARAB",
+      "𓂀", "روح", "ضوء", "حكمة", "نور", "سلام", "حب", "وعي", "مفتاح", "توازن",
+      "حياة", "رحمة", "صفاء", "تأمل", "إبداع", "إشراق", "إلهام", "تقدم"
+    ];
+
+    const container = document.getElementById("golden-fall");
+    const maxWords = 30;
+
+    function createFallingWord() {
+      const span = document.createElement("span");
+      span.className = "falling-word";
+      span.textContent = words[Math.floor(Math.random() * words.length)];
+
+      // توزيع عشوائي أفقي
+      span.style.left = Math.random() * 100 + "vw";
+
+      // مدة السقوط عشوائية بين 10 و 20 ثانية (بطيء)
+      const duration = 10 + Math.random() * 10;
+      span.style.animationDuration = duration + "s";
+
+      // بداية متأخرة عشوائية لتوزيع السقوط
+      span.style.animationDelay = "-" + (Math.random() * duration) + "s";
+
+      container.appendChild(span);
+
+      // إزالة العنصر بعد انتهاء السقوط (تجنب تراكم العناصر)
+      setTimeout(() => {
+        span.remove();
+      }, duration * 1000);
+    }
+
+    // إطلاق عدد من الكلمات لتبدأ السقوط بشكل متتابع
+    for(let i = 0; i < maxWords; i++) {
+      setTimeout(createFallingWord, i * 700);
+    }
+
+    // استمرارية إضافة الكلمات باستمرار كل 700 مللي ثانية
+    setInterval(createFallingWord, 700);
+  </script>
+</body>
+</html>

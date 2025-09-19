@@ -1,0 +1,2860 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Al Arab Club 777 Portal — Gateway to Ancient Wonders</title>
+<meta name="description" content="Book luxury hotel rooms, desert adventures, and complete Egypt tours from airport to pyramids. Interactive booking portal for Al Arab Club 777 Pyramids View Hotels." />
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+<style>
+  :root{
+    --bg:#05060a; --gold:#ffd66b; --muted:#9aa3b2; --accent:#4aa3ff;
+    --pyramid-gold: #d4af37; --desert-sand: #f4e4a6; --night-blue: #1a1d3a;
+  }
+  html,body{height:100%;margin:0;font-family: "Trebuchet MS", "Arial", sans-serif;background:var(--bg);color:var(--gold);overflow-x:hidden;scroll-behavior:smooth}
+
+/* === LAYERED BACKGROUNDS === */
+  .cosmic-bg{position:fixed;inset:0;z-index:0;background:
+    radial-gradient(ellipse 1400px 700px at 15% 25%, rgba(212,175,55,.08), transparent 50%),
+    radial-gradient(ellipse 1200px 600px at 85% 75%, rgba(26,29,58,.12), transparent 50%),
+    linear-gradient(145deg, rgba(5,6,10,.95), rgba(10,12,20,.98));
+  }
+  .stars{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background-image: 
+      radial-gradient(2px 2px at 20% 30%, rgba(255,214,107,0.8), transparent),
+      radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,214,107,0.9), transparent),
+      radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.7), transparent);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 450px 450px;
+    animation: twinkleStars 20s linear infinite;
+  }
+  @keyframes twinkleStars{0%{opacity:.7;transform:rotate(0deg)}50%{opacity:1;transform:rotate(180deg)}100%{opacity:.7;transform:rotate(360deg)}}
+
+  .particle-layer{position:fixed;inset:0;z-index:2;pointer-events:none;}
+
+/* === MAIN CANVAS === */
+  canvas#mainCanvas{position:fixed;inset:0;z-index:3;display:block;}
+
+/* === UI OVERLAY === */
+  .ui-overlay{position:fixed;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;}
+
+/* === HEADER === */
+  .main-header{pointer-events:auto;padding:20px;text-align:center;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,214,107,0.1);}
+  .main-header h1{margin:0;font-size:clamp(1.8rem, 4vw, 3.2rem);color:var(--gold);text-shadow:0 0 20px rgba(255,214,107,0.6);letter-spacing:2px;}
+  .main-header .subtitle{margin:10px 0;color:var(--muted);font-size:clamp(0.9rem, 2vw, 1.2rem);opacity:0.9;}
+
+/* === NAVIGATION MENU === */
+  .nav-menu{pointer-events:auto;position:fixed;top:20px;right:20px;z-index:15;display:flex;gap:15px;flex-wrap:wrap;}
+  .nav-btn{padding:12px 20px;background:rgba(255,214,107,0.1);color:var(--gold);border:1px solid rgba(255,214,107,0.3);border-radius:25px;text-decoration:none;font-weight:600;backdrop-filter:blur(10px);transition:all 0.3s ease;font-size:14px;}
+  .nav-btn:hover{background:rgba(255,214,107,0.2);border-color:rgba(255,214,107,0.6);transform:translateY(-2px);box-shadow:0 5px 15px rgba(255,214,107,0.3);}
+
+/* === PORTAL ORB === */
+  .portal-orb{pointer-events:auto;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);z-index:12;width:120px;height:120px;border-radius:50%;background:
+    linear-gradient(145deg, rgba(212,175,55,0.1), rgba(255,214,107,0.3)),
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 50%);
+  border:2px solid rgba(255,214,107,0.4);box-shadow:
+    0 0 40px rgba(255,214,107,0.4),
+    inset 0 0 20px rgba(255,214,107,0.1);
+  cursor:pointer;transition:all 0.3s ease;display:grid;place-items:center;}
+  .portal-orb:hover{transform:translate(-50%, -50%) scale(1.1);box-shadow:0 0 60px rgba(255,214,107,0.6);}
+  .portal-orb.active{animation:orbPulse 2s infinite ease-in-out;}
+  @keyframes orbPulse{0%{transform:translate(-50%, -50%) scale(1)}50%{transform:translate(-50%, -50%) scale(1.15)}100%{transform:translate(-50%, -50%) scale(1)}}
+  .portal-orb .inner{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle, rgba(255,214,107,0.3), rgba(212,175,55,0.1));display:grid;place-items:center;font-size:24px;}
+
+/* === SERVICE PANELS === */
+  .service-panels{pointer-events:auto;position:fixed;bottom:0;left:0;right:0;z-index:11;transform:translateY(100%);transition:transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);background:linear-gradient(180deg, transparent, rgba(0,0,0,0.9));padding:40px 20px 20px;}
+  .service-panels.visible{transform:translateY(0);}
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;max-width:1400px;margin:0 auto;}
+
+  .service-card{background:linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));border:1px solid rgba(255,214,107,0.2);border-radius:16px;padding:24px;backdrop-filter:blur(15px);transition:all 0.3s ease;position:relative;overflow:hidden;}
+  .service-card:hover{transform:translateY(-5px);border-color:rgba(255,214,107,0.5);box-shadow:0 10px 30px rgba(255,214,107,0.2);}
+  .service-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent, rgba(255,214,107,0.05), transparent);transform:rotate(45deg);transition:all 0.5s ease;opacity:0;}
+  .service-card:hover::before{opacity:1;animation:shimmer 2s ease-in-out infinite;}
+  @keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}
+
+  .service-card h3{margin:0 0 12px;color:var(--gold);font-size:1.3rem;font-weight:700;}
+  .service-card .price{color:var(--accent);font-weight:800;font-size:1.1rem;margin:10px 0;}
+  .service-card p{color:var(--muted);margin:0 0 15px;line-height:1.6;}
+  .service-card .features{list-style:none;padding:0;margin:15px 0;color:var(--muted);font-size:0.9rem;}
+  .service-card .features li{margin:5px 0;padding-left:15px;position:relative;}
+  .service-card .features li::before{content:'✦';position:absolute;left:0;color:var(--gold);}
+
+  .book-btn{display:block;width:100%;padding:14px;background:linear-gradient(90deg, var(--gold), #ffb84d);color:#000;text-decoration:none;border-radius:10px;font-weight:700;text-align:center;margin-top:15px;border:none;cursor:pointer;transition:all 0.3s ease;font-size:16px;}
+  .book-btn:hover{background:linear-gradient(90deg, #ffb84d, var(--gold));transform:translateY(-2px);box-shadow:0 5px 15px rgba(255,214,107,0.4);}
+
+/* === BOOKING MODAL === */
+  .booking-modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
+  .booking-modal.visible{display:flex;}
+  .modal-content{background:linear-gradient(145deg, rgba(26,29,58,0.95), rgba(5,6,10,0.95));border:1px solid rgba(255,214,107,0.3);border-radius:20px;padding:40px;max-width:500px;width:90vw;max-height:80vh;overflow-y:auto;position:relative;}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
+  .modal-header h2{margin:0;color:var(--gold);font-size:1.8rem;}
+  .close-modal{background:none;border:none;color:var(--gold);font-size:24px;cursor:pointer;padding:5px;}
+
+  .booking-form{display:flex;flex-direction:column;gap:20px;}
+  .form-group{display:flex;flex-direction:column;gap:8px;}
+  .form-group label{color:var(--gold);font-weight:600;}
+  .form-group input, .form-group select, .form-group textarea{padding:12px;border:1px solid rgba(255,214,107,0.3);border-radius:8px;background:rgba(255,255,255,0.05);color:white;font-family:inherit;}
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 10px rgba(255,214,107,0.3);}
+
+  .qr-section{text-align:center;margin-top:30px;padding:20px;background:rgba(255,255,255,0.05);border-radius:12px;display:none;}
+  .qr-section.visible{display:block;}
+  .qr-code{width:200px;height:200px;margin:20px auto;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;}
+
+/* === CHAT SYSTEM === */
+  .chat-toggle{position:fixed;bottom:30px;right:30px;z-index:15;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg, var(--gold), #ffb84d);display:grid;place-items:center;cursor:pointer;box-shadow:0 5px 20px rgba(255,214,107,0.4);border:2px solid rgba(255,255,255,0.1);font-size:24px;color:#000;}
+  .chat-toggle:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(255,214,107,0.6);}
+
+  .chat-window{position:fixed;bottom:100px;right:30px;width:360px;max-width:90vw;height:500px;background:rgba(5,6,10,0.98);border:1px solid rgba(255,214,107,0.3);border-radius:16px;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.8);backdrop-filter:blur(20px);}
+  .chat-window.visible{display:flex;}
+  .chat-header{padding:20px;border-bottom:1px solid rgba(255,214,107,0.2);color:var(--gold);font-weight:700;text-align:center;}
+  .chat-body{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:15px;}
+  .chat-input-area{padding:20px;border-top:1px solid rgba(255,214,107,0.2);display:flex;gap:10px;}
+  .chat-input{flex:1;padding:12px;border:1px solid rgba(255,214,107,0.3);border-radius:8px;background:rgba(255,255,255,0.05);color:white;}
+  .chat-send{padding:12px 20px;background:var(--gold);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;}
+
+  .message{max-width:80%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.4;}
+  .message.agent{background:rgba(255,214,107,0.1);color:var(--gold);align-self:flex-start;}
+  .message.user{background:rgba(255,255,255,0.1);color:white;align-self:flex-end;}
+
+/* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .services-grid{grid-template-columns:1fr;}
+    .nav-menu{position:static;justify-content:center;margin-top:20px;}
+    .portal-orb{width:100px;height:100px;}
+    .portal-orb .inner{width:70px;height:70px;font-size:20px;}
+    .main-header{padding:15px;}
+    .service-panels{padding:30px 15px 15px;}
+  }
+
+/* === MOUSE TRAIL === */
+  .mouse-trail{position:fixed;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle, var(--gold), transparent);pointer-events:none;z-index:8;opacity:0.7;transition:opacity 0.3s ease;}
+
+/* === LOADING SCREEN === */
+  .loading-screen{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease;}
+  .loading-screen.hidden{opacity:0;pointer-events:none;}
+  .loading-pyramid{width:80px;height:80px;border:2px solid rgba(255,214,107,0.3);border-top:2px solid var(--gold);border-radius:50%;animation:loadingSpin 1s linear infinite;}
+  @keyframes loadingSpin{100%{transform:rotate(360deg)}}
+  .loading-text{margin-top:30px;color:var(--gold);font-size:1.2rem;opacity:0.8;}
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-pyramid"></div>
+  <div class="loading-text">Opening the Portal...</div>
+</div>
+
+<!-- Background Layers -->
+<div class="cosmic-bg"></div>
+<div class="stars"></div>
+<div class="particle-layer"></div>
+
+<!-- Main Canvas for Interactive Effects -->
+<canvas id="mainCanvas"></canvas>
+
+<!-- UI Overlay -->
+<div class="ui-overlay">
+  <!-- Header -->
+  <header class="main-header">
+    <h1>Al Arab Club 777 Portal</h1>
+    <p class="subtitle">Gateway to Ancient Wonders • فندق سيتي بلازا</p>
+    
+    <!-- Navigation -->
+    <nav class="nav-menu">
+      <a href="#rooms" class="nav-btn">Hotel Rooms</a>
+      <a href="#tours" class="nav-btn">Desert Tours</a>
+      <a href="#packages" class="nav-btn">Full Packages</a>
+      <a href="#contact" class="nav-btn">Contact</a>
+    </nav>
+  </header>
+</div>
+
+<!-- Portal Orb -->
+<div class="portal-orb active" id="portalOrb">
+  <div class="inner">🔮</div>
+</div>
+
+<!-- Service Panels -->
+<div class="service-panels" id="servicePanels">
+  <div class="services-grid">
+    <!-- Hotel Rooms -->
+    <div class="service-card" data-service="rooms">
+      <h3>🏨 Luxury Hotel Rooms</h3>
+      <div class="price">$60 - $120 / night</div>
+      <p>Experience luxury with pyramid views in the heart of Giza</p>
+      <ul class="features">
+        <li>Standard Room - Modern comfort ($60/night)</li>
+        <li>Deluxe Room - Spacious family suite ($85/night)</li>
+        <li>Balcony Suite - Pyramid views ($120/night)</li>
+        <li>Free WiFi & Breakfast</li>
+        <li>Airport Transfer Available</li>
+      </ul>
+      <button class="book-btn" onclick="openBooking('rooms')">Book Hotel Stay</button>
+    </div>
+
+    <!-- Desert Tours -->
+    <div class="service-card" data-service="tours">
+      <h3>🐪 Desert Adventures</h3>
+      <div class="price">$20 - $75 per tour</div>
+      <p>Authentic desert experiences with professional guides</p>
+      <ul class="features">
+        <li>Camel Ride - Pharaohs' Journey ($20-35)</li>
+        <li>Horse Ride - Desert Knight ($25-40)</li>
+        <li>Buggy Safari - Modern Chariot ($50-75)</li>
+        <li>Sunset & Sunrise Options</li>
+        <li>Professional Photography</li>
+      </ul>
+      <button class="book-btn" onclick="openBooking('tours')">Book Adventure</button>
+    </div>
+
+    <!-- Airport Packages -->
+    <div class="service-card" data-service="packages">
+      <h3>✈️ Complete Packages</h3>
+      <div class="price">$1500 Full Experience</div>
+      <p>From airport to pyramids - complete tourism package</p>
+      <ul class="features">
+        <li>3 Nights Hotel Accommodation</li>
+        <li>All Desert Tours Included</li>
+        <li>Airport Pickup & Dropoff</li>
+        <li>Professional Tour Guide</li>
+        <li>Meals & Transportation</li>
+      </ul>
+      <button class="book-btn" onclick="openBooking('packages')">Book Complete Package</button>
+    </div>
+
+    <!-- AlArab Club Services -->
+    <div class="service-card" data-service="alarab">
+      <h3>👑 AlArab Club 777</h3>
+      <div class="price">Premium Partnership</div>
+      <p>Exclusive services through our premium partner</p>
+      <ul class="features">
+        <li>VIP Treatment & Concierge</li>
+        <li>Exclusive Discounts</li>
+        <li>Private Tour Options</li>
+        <li>Luxury Transportation</li>
+        <li>24/7 Support Service</li>
+      </ul>
+      <button class="book-btn" onclick="window.open('https://alarabclub777ai.vercel.app/', '_blank')">Visit AlArab Portal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" id="bookingModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Complete Your Booking</h2>
+      <button class="close-modal" onclick="closeBooking()">&times;</button>
+    </div>
+    
+    <form class="booking-form" id="bookingForm">
+      <div class="form-group">
+        <label for="customerName">Full Name *</label>
+        <input type="text" id="customerName" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="customerEmail">Email *</label>
+        <input type="email" id="customerEmail" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="customerPhone">WhatsApp Number *</label>
+        <input type="tel" id="customerPhone" placeholder="+20 100 XXX XXXX" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="checkIn">Check-in Date</label>
+        <input type="date" id="checkIn">
+      </div>
+      
+      <div class="form-group">
+        <label for="guests">Number of Guests</label>
+        <select id="guests">
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+          <option value="5+">5+ Guests</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="specialRequests">Special Requests</label>
+        <textarea id="specialRequests" rows="3" placeholder="Any special requests or questions..."></textarea>
+      </div>
+      
+      <button type="submit" class="book-btn">Complete Booking via WhatsApp</button>
+    </form>
+    
+    <div class="qr-section" id="qrSection">
+      <h3>Scan to Complete Booking</h3>
+      <div class="qr-code" id="qrCode">QR Code will appear here</div>
+      <p>Scan with your phone to continue booking via WhatsApp</p>
+    </div>
+  </div>
+</div>
+
+<!-- Chat System -->
+<div class="chat-toggle" id="chatToggle" onclick="toggleChat()">💬</div>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">Al Arab Club 777 Assistant</div>
+  <div class="chat-body" id="chatBody">
+    <div class="message agent">Welcome! I'm here to help you book the perfect Egyptian adventure. What interests you most?</div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about rooms, tours, or packages...">
+    <button class="chat-send" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<!-- Mouse Trail Elements -->
+<div class="mouse-trail" id="mouseTrail"></div>
+
+<script>
+// === CANVAS INTERACTIVE EFFECTS ===
+(function() {
+  const canvas = document.getElementById('mainCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let pyramidParticles = [];
+  let mouse = { x: 0, y: 0 };
+  
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+  }
+  
+  function initParticles() {
+    particles = [];
+    pyramidParticles = [];
+    
+    // Background particles
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        opacity: Math.random() * 0.5 + 0.2,
+        size: Math.random() * 2 + 1
+      });
+    }
+    
+    // Pyramid formation particles
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    for (let layer = 0; layer < 8; layer++) {
+      const radius = layer * 30 + 50;
+      const count = Math.max(4, layer * 2);
+      for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2;
+        pyramidParticles.push({
+          x: centerX + Math.cos(angle) * radius,
+          y: centerY + Math.sin(angle) * radius,
+          baseX: centerX + Math.cos(angle) * radius,
+          baseY: centerY + Math.sin(angle) * radius,
+          vx: 0,
+          vy: 0,
+          opacity: 0.8 - layer * 0.1,
+          size: 3 - layer * 0.2,
+          layer: layer
+        });
+      }
+    }
+  }
+  
+  function updateParticles() {
+    // Update background particles
+    particles.forEach(particle => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      
+      if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+      if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+    });
+    
+    // Update pyramid particles
+    pyramidParticles.forEach(particle => {
+      const dx = mouse.x - particle.x;
+      const dy = mouse.y - particle.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance < 150) {
+        const force = (150 - distance) / 150 * 0.02;
+        particle.vx -= dx * force;
+        particle.vy -= dy * force;
+      }
+      
+      // Spring back to base position
+      particle.vx += (particle.baseX - particle.x) * 0.01;
+      particle.vy += (particle.baseY - particle.y) * 0.01;
+      
+      // Damping
+      particle.vx *= 0.98;
+      particle.vy *= 0.98;
+      
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+    });
+  }
+  
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw background particles
+    particles.forEach(particle => {
+      ctx.save();
+      ctx.globalAlpha = particle.opacity;
+      ctx.fillStyle = '#ffd66b';
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+    
+    // Draw pyramid particles
+    pyramidParticles.forEach(particle => {
+      ctx.save();
+      ctx.globalAlpha = particle.opacity;
+      ctx.fillStyle = `hsl(${45 + particle.layer * 5}, 100%, ${70 - particle.layer * 5}%)`;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+    
+    // Connect nearby pyramid particles
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = '#ffd66b';
+    ctx.lineWidth = 0.5;
+    pyramidParticles.forEach((p1, i) => {
+      pyramidParticles.slice(i + 1).forEach(p2 => {
+        const distance = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+        if (distance < 60) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      });
+    });
+    ctx.restore();
+  }
+  
+  function animate() {
+    updateParticles();
+    drawParticles();
+    requestAnimationFrame(animate);
+  }
+  
+  // Mouse tracking
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    
+    // Update mouse trail
+    const trail = document.getElementById('mouseTrail');
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+  });
+  
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  animate();
+})();
+
+// === UI INTERACTIONS ===
+let currentService = '';
+
+// Portal activation
+document.getElementById('portalOrb').addEventListener('click', () => {
+  const panels = document.getElementById('servicePanels');
+  panels.classList.add('visible');
+  
+  // Add explosion effect
+  const orb = document.getElementById('portalOrb');
+  orb.style.transform = 'translate(-50%, -50%) scale(1.3)';
+  orb.style.boxShadow = '0 0 100px rgba(255,214,107,0.8)';
+  
+  setTimeout(() => {
+    orb.style.transform = 'translate(-50%, -50%) scale(1)';
+    orb.style.boxShadow = '0 0 40px rgba(255,214,107,0.4)';
+  }, 300);
+});
+
+// Booking functions
+function openBooking(service) {
+  currentService = service;
+  const modal = document.getElementById('bookingModal');
+  const title = document.getElementById('modalTitle');
+  
+  const titles = {
+    rooms: 'Book Your Hotel Stay',
+    tours: 'Book Desert Adventure',
+    packages: 'Book Complete Package',
+    alarab: 'AlArab Club 777 Services'
+  };
+  
+  title.textContent = titles[service] || 'Complete Your Booking';
+  modal.classList.add('visible');
+  
+  // Set minimum date to today
+  const checkIn = document.getElementById('checkIn');
+  const today = new Date().toISOString().split('T')[0];
+  checkIn.setAttribute('min', today);
+}
+
+function closeBooking() {
+  const modal = document.getElementById('bookingModal');
+  modal.classList.remove('visible');
+  document.getElementById('qrSection').classList.remove('visible');
+}
+
+// Form submission
+document.getElementById('bookingForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const formData = {
+    service: currentService,
+    name: document.getElementById('customerName').value,
+    email: document.getElementById('customerEmail').value,
+    phone: document.getElementById('customerPhone').value,
+    checkIn: document.getElementById('checkIn').value,
+    guests: document.getElementById('guests').value,
+    requests: document.getElementById('specialRequests').value
+  };
+  
+  // Generate WhatsApp message
+  const message = generateWhatsAppMessage(formData);
+  const whatsappUrl = `https://wa.me/201002446123?text=${encodeURIComponent(message)}`;
+  
+  // Generate QR code (simplified version)
+  generateQRCode(whatsappUrl);
+  
+  // Show QR section
+  document.getElementById('qrSection').classList.add('visible');
+  
+  // Also open WhatsApp directly
+  setTimeout(() => {
+    window.open(whatsappUrl, '_blank');
+  }, 1000);
+});
+
+function generateWhatsAppMessage(data) {
+  const services = {
+    rooms: 'Hotel Room Booking',
+    tours: 'Desert Tour Booking',
+    packages: 'Complete Package Booking',
+    alarab: 'AlArab Club Premium Services'
+  };
+  
+  return `🏨 ${services[data.service]}
+
+👤 Name: ${data.name}
+📧 Email: ${data.email}
+📱 Phone: ${data.phone}
+📅 Check-in: ${data.checkIn}
+👥 Guests: ${data.guests}
+
+💬 Special Requests:
+${data.requests}
+
+🔗 Booked via: Al Arab Club 777 Portal
+⏰ Time: ${new Date().toLocaleString()}`;
+}
+
+function generateQRCode(url) {
+  // Simplified QR code generation
+  // In production, use a proper QR code library
+  const qrCode = document.getElementById('qrCode');
+  qrCode.innerHTML = `
+    <div style="background: white; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+      <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
+      <div style="font-size: 12px; text-align: center;">Scan to open<br>WhatsApp booking</div>
+    </div>
+  `;
+  
+  // You can integrate a real QR code library here like qrcode.js
+  // For now, this creates a clickable element
+  qrCode.onclick = () => window.open(url, '_blank');
+}
+
+// Chat system
+let chatVisible = false;
+
+function toggleChat() {
+  const chatWindow = document.getElementById('chatWindow');
+  chatVisible = !chatVisible;
+  
+  if (chatVisible) {
+    chatWindow.classList.add('visible');
+  } else {
+    chatWindow.classList.remove('visible');
+  }
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  const chatBody = document.getElementById('chatBody');
+  
+  // Add user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'message user';
+  userMsg.textContent = message;
+  chatBody.appendChild(userMsg);
+  
+  // Clear input
+  input.value = '';
+  
+  // Simulate agent response
+  setTimeout(() => {
+    const agentMsg = document.createElement('div');
+    agentMsg.className = 'message agent';
+    agentMsg.textContent = generateAgentResponse(message);
+    chatBody.appendChild(agentMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 1000);
+  
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function generateAgentResponse(message) {
+  const msg = message.toLowerCase();
+  
+  if (msg.includes('room') || msg.includes('hotel')) {
+    return "We have luxury rooms with pyramid views! Standard ($60), Deluxe ($85), and Balcony Suite ($120). Which interests you most?";
+  } else if (msg.includes('tour') || msg.includes('camel') || msg.includes('horse') || msg.includes('buggy')) {
+    return "Our desert adventures are amazing! Camel rides ($20-35), Horse rides ($25-40), and Buggy safari ($50-75). All include professional guides!";
+  } else if (msg.includes('package') || msg.includes('full')) {
+    return "Our complete package ($1500) includes 3 nights hotel + all tours + airport transfers. Everything you need for the perfect Egypt experience!";
+  } else if (msg.includes('price') || msg.includes('cost')) {
+    return "Rooms: $60-120/night | Tours: $20-75 | Complete Package: $1500. All prices include taxes and professional service!";
+  } else {
+    return "I'd love to help you plan your perfect Egyptian adventure! Ask me about our hotel rooms, desert tours, or complete packages.";
+  }
+}
+
+// Chat input enter key
+document.getElementById('chatInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+// Loading screen
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+  }, 1500);
+});
+
+// Smooth scrolling for navigation
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = e.target.getAttribute('href');
+    if (target === '#contact') {
+      toggleChat();
+    } else {
+      // Show service panels if not visible
+      const panels = document.getElementById('servicePanels');
+      if (!panels.classList.contains('visible')) {
+        panels.classList.add('visible');
+      }
+    }
+  });
+});
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="timeless">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>بوابة التاريخ — Cyber-Pyramid Tourist | AlArab Neo-Club (2125)</title>
+<meta name="description" content="نسخة مستقبلية 2125 — بوابة سفر زمني رقمية — تصميم من المستقبل إلى الأمام 100 سنة." />
+<style>
+  /* -------------------------
+     FUTURE CORE — Year 2125
+     Minimal external deps — single file.
+     Visual intent: ذهبية ماتريكس + بوابة زمنية عابرة للأبعاد
+     ------------------------- */
+
+  :root{
+    --bg-1:#02021a;
+    --bg-2:#0b0626;
+    --neon-a:#00ffd5;
+    --neon-b:#ffd966;
+    --muted:#b8b0a5;
+    --glass: rgba(255,255,255,0.04);
+    --accent-glow: 0 10px 40px rgba(255,217,102,0.08), inset 0 -8px 24px rgba(0,0,0,0.35);
+    --gold-matrix: #ffd966;
+    --ui-radius:16px;
+    --year: '2125';
+  }
+
+  /* Reset + base */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Inter var", "Noto Kufi Arabic", "Segoe UI", system-ui, Arial, sans-serif;
+    background:
+      radial-gradient(800px 400px at 12% 10%, rgba(0,30,40,0.22), transparent),
+      linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:var(--neon-a);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    -webkit-tap-highlight-color: transparent;
+    padding-bottom:96px;
+    position:relative;
+  }
+
+  /* GOLDEN MATRIX LAYER — animated vertical streaming glyphs */
+  .gold-matrix {
+    pointer-events:none;
+    position:fixed; inset:0; z-index:0;
+    mix-blend-mode: screen;
+    background-image: linear-gradient(180deg, rgba(3,3,6,0.22), rgba(0,0,0,0.0));
+    overflow:hidden;
+  }
+  .gold-matrix .column {
+    position:absolute; top:-110%; width:1.6rem; text-align:center;
+    color:rgba(255,217,102,0.12);
+    font-family: "Noto Sans Symbols", "Segoe UI Symbol", monospace;
+    letter-spacing:6px; transform:translateZ(0);
+    text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    will-change:transform, opacity;
+    animation:matrixFall linear infinite;
+    mix-blend-mode:screen;
+    font-weight:700;
+  }
+  @keyframes matrixFall {
+    from{transform:translateY(-110%) rotate(2deg); opacity:0}
+    30%{opacity:1}
+    to{transform:translateY(120%) rotate(-2deg); opacity:0}
+  }
+
+  /* CHRONO PORTAL — blurred glowing SVG */
+  .chronosky{position:fixed; inset:0; z-index:1; pointer-events:none;}
+  .chronoport{
+    position:absolute; left:50%; top:8%;
+    transform:translateX(-50%) perspective(900px) rotateX(16deg);
+    width:880px; height:420px; max-width:95%;
+    filter:blur(10px) saturate(140%); opacity:0.9;
+  }
+
+  /* Header */
+  header{
+    z-index:8; position:relative; padding:22px 28px; display:flex; gap:18px;
+    align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; gap:14px; align-items:center}
+  .logo{
+    width:76px; height:76px; border-radius:20px;
+    background: linear-gradient(135deg,var(--neon-b), #ffb84d 60%, var(--neon-a));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: var(--accent-glow);
+    transform:rotate(9deg);
+  }
+  .logo svg{width:46px;height:46px; filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6));}
+  .brand h1{margin:0;font-size:18px;letter-spacing:0.6px;color:#fff}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+  nav{display:flex;gap:12px; align-items:center}
+  .navlink{
+    color:rgba(255,255,255,0.92); text-decoration:none; padding:10px 14px; border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03); font-size:13px; transition: transform .16s ease;
+  }
+  .navlink:hover{transform: translateY(-4px) scale(1.02)}
+
+  /* Container grid */
+  .container{
+    position:relative; z-index:6; max-width:1200px; margin:18px auto 120px; padding:20px;
+    display:grid; grid-template-columns:1fr 440px; gap:26px;
+  }
+
+  /* Hero */
+  .hero-panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:20px; padding:28px; box-shadow: 0 18px 60px rgba(2,6,23,0.7);
+    border:1px solid rgba(255,255,255,0.02); overflow:hidden; position:relative;
+  }
+  .hero-title{font-size:24px; margin:0; color: #fff}
+  .hero-subtitle{font-size:14px; color:var(--muted); margin-top:8px}
+  .guide-rating{font-size:13px; color:var(--muted)}
+
+  .visual-gateway{
+    margin-top:18px; border-radius:16px; height:360px; overflow:hidden; position:relative;
+    background:
+      radial-gradient(800px 280px at 50% 40%, rgba(0,255,213,0.06), transparent 20%),
+      linear-gradient(180deg, rgba(8,2,36,0.6), rgba(36,12,36,0.45));
+    border:1px solid rgba(255,255,255,0.02);
+    display:flex; align-items:center; justify-content:center;
+  }
+  /* 3D pseudo-cube + rotating rings (pure CSS illusion) */
+  .portal-scene{width:78%; height:78%; position:relative; display:flex; align-items:center; justify-content:center}
+  .ring{
+    position:absolute; border-radius:50%;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 -6px 18px rgba(255,217,102,0.02);
+    border:1px solid rgba(255,255,255,0.03);
+    animation:spin linear infinite;
+  }
+  .ring.r1{width:360px;height:360px; transform:rotateX(56deg) rotate(15deg); animation-duration:24s; border:2px dashed rgba(255,217,102,0.06)}
+  .ring.r2{width:250px;height:250px; transform:rotateX(60deg); animation-duration:18s}
+  .ring.r3{width:140px;height:140px; transform:rotateX(68deg); animation-duration:12s; background:radial-gradient(circle at 30% 30%, rgba(0,255,213,0.06), transparent 40%)}
+  @keyframes spin{from{transform:rotate(0deg) rotateX(56deg)} to{transform:rotate(360deg) rotateX(56deg)}}
+
+  .portal-core{
+    width:88px;height:88px;border-radius:50%;
+    background: conic-gradient(from 90deg, rgba(255,217,102,0.12), rgba(0,255,213,0.12));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 12px 36px rgba(0,255,213,0.06), 0 0 40px rgba(255,217,102,0.02);
+    font-weight:800; color:#030312; font-size:13px; backdrop-filter: blur(6px);
+  }
+
+  .tour-features{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .feature-chip{flex:1 1 180px;background:var(--glass); padding:12px;border-radius:12px;font-size:13px;color:var(--muted); border:1px solid rgba(255,255,255,0.02)}
+
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+  .gallery-orb{height:84px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted); border:1px solid rgba(255,255,255,0.02)}
+
+  .price-orb{font-weight:900;font-size:20px;background:linear-gradient(90deg,var(--neon-b), #b88b00); padding:10px 14px;border-radius:12px;color:#030312; display:inline-block}
+
+  /* Booking module */
+  .booking-module{
+    position:sticky; top:28px; background: linear-gradient(180deg, rgba(4,20,36,0.7), rgba(2,6,20,0.55));
+    padding:22px;border-radius:18px;border:1px solid rgba(255,255,255,0.03); height:max-content; box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+  }
+  label{display:block;margin-top:12px;font-size:13px;color:var(--muted)}
+  .data-field{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04); background:rgba(255,255,255,0.016); color:inherit; font-size:14px; margin-top:8px}
+  textarea.data-field{min-height:110px; resize:vertical}
+
+  .teleport-btn{
+    display:block;width:100%; padding:14px 18px;border-radius:14px;border:0;margin-top:16px; font-weight:900; cursor:pointer;
+    background: linear-gradient(90deg,var(--neon-a), #00c299); color:#02131a; font-size:15px; box-shadow: 0 14px 40px rgba(0,255,213,0.06);
+  }
+
+  .small{font-size:13px; color:var(--muted); margin-top:10px}
+  .muted{opacity:0.8; color:var(--muted)}
+
+  /* Floating action */
+  .float-teleport{
+    position:fixed; z-index:9; bottom:20px; left:20px; background:linear-gradient(180deg,var(--neon-b),#ffbf55); color:#231804;
+    padding:14px 18px;border-radius:999px;font-weight:900; box-shadow: 0 16px 48px rgba(14,0,96,0.65); display:flex; gap:10px; align-items:center; text-decoration:none;
+    border:1px solid rgba(0,0,0,0.08);
+  }
+
+  footer{
+    margin:32px auto 64px; max-width:1200px; color:var(--muted); display:flex; justify-content:space-between; gap:12px; padding:0 20px;
+  }
+
+  /* Quantum glyphs animations (JS spawns) */
+  .quantum-glyph{ position:fixed; z-index:99999; pointer-events:none; font-size:20px; opacity:0.98; transform:translateY(0) rotate(20deg); animation:quantumFloat 2000ms ease-out forwards; color:var(--neon-b); text-shadow:0 6px 18px rgba(0,0,0,0.6)}
+  @keyframes quantumFloat{ to{ transform:translateY(-150px) rotate(10deg) scale(.6); opacity:0 } }
+
+  /* responsive */
+  @media (max-width:1080px){
+    .container{grid-template-columns:1fr; padding:14px}
+    .booking-module{position:relative; top:auto}
+    .chronoport{top:6%}
+  }
+
+  /* subtle focus rings for accessibility */
+  :focus{outline: none; box-shadow: 0 0 0 4px rgba(0,255,213,0.08), 0 8px 30px rgba(0,0,0,0.6); border-radius:10px}
+</style>
+</head>
+<body>
+
+<!-- GOLD MATRIX: generate columns with JS or fall back decorative spans -->
+<div class="gold-matrix" aria-hidden="true" id="goldMatrix"></div>
+
+<div class="chronosky" aria-hidden="true">
+  <div class="chronoport" role="presentation" aria-hidden="true">
+    <!-- Future portal svg: soft glow + rings -->
+    <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="g2" cx="45%" cy="45%" r="70%">
+          <stop offset="0%" stop-color="#00ffd5" stop-opacity="0.22"/>
+          <stop offset="60%" stop-color="#ffd966" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#0b0710" stop-opacity="0.0"/>
+        </radialGradient>
+        <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="18" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#g2)" />
+      <g transform="translate(200,120) scale(1.18)" opacity="0.86" filter="url(#softBlur)">
+        <circle cx="500" cy="150" r="220" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="18"/>
+        <g fill="#ffd966" opacity="0.12">
+          <polygon points="150,600 420,160 690,600"/>
+          <polygon points="450,600 720,200 990,600"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<header>
+  <div class="brand" role="banner">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M32 6 L6 52 H58 Z" fill="#0b0810" stroke="#4a3b2a" stroke-width="1.5"/>
+        <circle cx="32" cy="22" r="10" fill="#00ffd5" opacity="0.96"/>
+      </svg>
+    </div>
+    <div>
+      <h1>بوابة الحاضر والماضـي—Edge of History</h1>
+      <p>Cyber-Pyramid Tourist • دليل الزمن — AlArab Neo-Club · <span title="future year">سنة: 2125</span></p>
+    </div>
+  </div>
+
+  <nav aria-label="روابط الفضاء الزمني">
+    <a class="navlink" href="#packages-list">التجارب</a>
+    <a class="navlink" href="#booking-form">احجز الآن</a>
+    <a class="navlink" href="#contact-info">تواصل</a>
+  </nav>
+</header>
+
+<main class="container" id="main">
+  <section class="hero-panel" aria-labelledby="hero-title">
+    <div class="hero-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <h2 id="hero-title" class="hero-title">بوابة السفر الزمني — اكتشف جوهرك الخالد (Find your eternal essence)</h2>
+        <p class="hero-subtitle">جولات عبر الأبعاد، رحلة هرمية بتقنية الـHolo-Echo، مروحية زمنية، وتجارب ثقافية مع العرّاب.</p>
+      </div>
+      <div class="guide-rating" aria-hidden="true">⭐ تقييم المرشد: <strong style="color:#fff">4.98</strong> — خبرة تمتد عبر العصور</div>
+    </div>
+
+    <a class="visual-gateway" href="#gallery-grid" aria-hidden="true" title="شاهد البوابة">
+      <div class="portal-scene" role="img" aria-label="بوابة زمنية ثلاثية الأبعاد">
+        <div class="ring r" aria-hidden="true"></div>
+        <div class="ring r2" aria-hidden="true"></div>
+        <div class="ring r3" aria-hidden="true"></div>
+        <div class="portal-core" aria-hidden="true">silence</div>
+      </div>
+    </a>
+
+    <div class="tour-features" role="list" aria-label="مميزات الرحلة">
+      <div class="feature-chip" role="listitem">نقطة الانطلاق: AlArab Neo-Club Station</div>
+      <div class="feature-chip" role="listitem">المدة: نصف دورة زمنية / دورة كاملة</div>
+      <div class="feature-chip" role="listitem">لغات: العربية، الإنجليزية، استقبال آلي متعدد الأزمان</div>
+      <div class="feature-chip" role="listitem">مناسب للمسافرين عبر الزمن والعائلات الروحانية</div>
+    </div>
+
+    <div id="packages-list" style="margin-top:22px">
+      <h3 style="margin:6px 0 12px;color:var(--neon-b)">باقات Cyber-Pyramid (وُضعت بأسلوب 2125)</h3>
+      <div style="display:grid;gap:12px">
+        <article class="package-frame" style="padding:14px;border-radius:14px;background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.02)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>باقة نصف دورة زمنية</strong><div class="muted">جولة هادئة - زيارة هرم + صور ثلاثية الأبعاد</div></div>
+            <div class="price-orb">500 USD</div>
+          </div>
+        </article>
+
+        <article class="package-frame" style="padding:14px;border-radius:14px;background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.02)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>باقة الدورة الكاملة</strong><div class="muted">هرم + رحلة بالمروحية الزمنية + غروب فضائي</div></div>
+            <div class="price-orb">950 USD</div>
+          </div>
+        </article>
+
+        <article class="package-frame" style="padding:14px;border-radius:14px;background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.02)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>تجربة العائلة الزمنية</strong><div class="muted">نشاطات للأطفال الكوانتيين + تصوير هولوغرامي</div></div>
+            <div class="price-orb">1300 USD</div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div id="gallery-grid" style="margin-top:20px">
+      <h3 style="margin:6px 0 12px;color:var(--neon-a)">معرض زمني</h3>
+      <div class="gallery-grid" role="list" aria-label="صور الرحلات">
+        <div class="gallery-orb" role="listitem">صورة من المستقبل</div>
+        <div class="gallery-orb" role="listitem">صورة من الحاضر</div>
+        <div class="gallery-orb" role="listitem">صورة من الماضي</div>
+        <div class="gallery-orb" role="listitem">صورة من البعد الرابع</div>
+        <div class="gallery-orb" role="listitem">هولو-شوت عائلي</div>
+        <div class="gallery-orb" role="listitem">بين الأهرامات والنجوم</div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="booking-module" id="booking-form" aria-labelledby="booking-title">
+    <h3 id="booking-title">نموذج الحجز — Cyber-Pyramid Tourist</h3>
+    <div class="small muted" role="status" aria-live="polite">املأ البيانات وسنرسل تأكيدًا عبر الفضاء الرقمي / واتساب الجيل الخامس.</div>
+
+    <label for="package">اختر التجربة</label>
+    <select id="package" name="package" aria-label="الباقة" class="data-field">
+      <option value="half">باقة نصف دورة زمنية — 500 USD</option>
+      <option value="full">باقة الدورة الكاملة — 950 USD</option>
+      <option value="family">تجربة العائلة الزمنية — 1300 USD</option>
+    </select>
+
+    <label for="date">تاريخ السفر الزمني</label>
+    <input id="date" type="date" class="data-field" aria-required="true"/>
+
+    <label for="name">الاسم الكوانتي</label>
+    <input id="name" type="text" placeholder="اسم كامل أو المعرف الكوانتي" class="data-field" />
+
+    <label for="people">عدد الأرواح</label>
+    <input id="people" type="number" min="1" value="2" class="data-field" />
+
+    <label for="notes">ملاحظات / نقطة الانطلاق</label>
+    <textarea id="notes" placeholder="اكتب ملاحظات أو موقع الانطلاق (مثال: محطة تايم وورب، القطاع ألفا)" class="data-field"></textarea>
+
+    <button id="teleportBtn" class="teleport-btn" type="button" aria-label="احجز الآن">احجز الآن — أرسل إشارة واتساب</button>
+
+    <div class="small muted" style="margin-top:10px">
+      أو تواصل عبر: <strong id="phoneDisplay">+201002446123</strong>
+    </div>
+
+    <div id="contact-info" style="font-size:13px;margin-top:18px">
+      <strong>- AlArab — العرّاب المرشد الزمني</strong>
+      <div class="muted">خبرة فائقة، مرشد موثوق. هاتِف الطوارئ: <span class="muted">+201002446123</span></div>
+    </div>
+  </aside>
+</main>
+
+<a class="float-teleport" href="#booking-form" aria-label="زر الحجز السريع">
+  احجز الآن
+  <svg width="18" height="18" viewBox="0 0 24 24" style="transform: translateY(1px)" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M2 12h20M12 2v20" stroke="#0b0810" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+</a>
+
+<footer>
+  <div>© <strong>Edge of History Portal</strong> — Cyber-Pyramid Tourist — <span aria-hidden="true">Declaration 2125</span></div>
+  <div class="muted">تم إنشاء الصفحة بواسطة AlArab AI-Legacy — تصميم صادر من المستقبل (2125). عدّل المحتوى والأسعار حسب الحاجة.</div>
+</footer>
+
+<!-- ---------------------------
+     JavaScript: UX + Matrix + Booking
+     Single-file — no external requests
+     --------------------------- -->
+<script>
+  // QuantumState (light) — shared state + small API
+  class QuantumState {
+    constructor(initial) { this.state = initial || {}; this.listeners = []; }
+    getState(){ return this.state; }
+    setState(patch){ this.state = {...this.state, ...patch}; this.listeners.forEach(l=>l(this.state)); }
+    subscribe(fn){ this.listeners.push(fn); return ()=> this.listeners = this.listeners.filter(x=>x!==fn) }
+  }
+
+  const tourState = new QuantumState({
+    phone: '+201002446123',
+    glyphs: ['𓀀','𓂀','𓃀','𓂓','𓆣','𓊖','𓂋','𓈖','⚛️','🪐','💫','∴','∷','✦']
+  });
+
+  // populate phone display
+  const phoneDisplay = document.getElementById('phoneDisplay');
+  phoneDisplay.textContent = tourState.getState().phone;
+
+  // Helper: clean phone digits
+  function cleanPhone(p){ return (p||'').replace(/\\D/g,''); }
+
+  // Teleport button: build WhatsApp URL (keeps same behavior)
+  const teleportBtn = document.getElementById('teleportBtn');
+  teleportBtn.addEventListener('click', () => {
+    const pkg = document.getElementById('package').value;
+    const date = document.getElementById('date').value || 'غير محدد';
+    const name = document.getElementById('name').value || 'زائر زمني';
+    const people = document.getElementById('people').value || '1';
+    const notes = document.getElementById('notes').value || '-';
+
+    const packageLabels = {
+      half: 'باقة نصف دورة زمنية — 500 USD',
+      full: 'باقة الدورة الكاملة — 950 USD',
+      family: 'تجربة العائلة الزمنية — 1300 USD'
+    };
+    const packageLabel = packageLabels[pkg] || pkg;
+
+    const message = `مرحبًا Neo-Ameer 👋%0Aأرغب بحجز: ${encodeURIComponent(packageLabel)}%0Aتاريخ السفر: ${encodeURIComponent(date)}%0Aالاسم: ${encodeURIComponent(name)}%0Aعدد الأرواح: ${encodeURIComponent(people)}%0Aملاحظات: ${encodeURIComponent(notes)}%0A%0Aموقع الانطلاق: (مثال: محطة تايم وورب...)`;
+
+    const phone = cleanPhone(tourState.getState().phone) || '201002446123';
+    const waUrl = `https://wa.me/${phone}?text=${message}`;
+
+    // open in new tab — for future devices uses same link handler
+    window.open(waUrl, '_blank');
+
+    // UX feedback — glyphs
+    spawnGlyphs(9);
+
+    // persist last booking draft locally (simple safeguard)
+    try {
+      localStorage.setItem('lastBookingDraft', JSON.stringify({pkg,date,name,people,notes,ts:Date.now()}));
+    } catch(e){}
+  });
+
+  // spawn animated glyphs near random positions (subtle)
+  function spawnGlyphs(n=6){
+    for(let i=0;i<n;i++){
+      const g = document.createElement('div');
+      g.className = 'quantum-glyph';
+      const glyphs = tourState.getState().glyphs;
+      g.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+      const x = (12 + Math.random()*(window.innerWidth-80));
+      const y = (80 + Math.random()*(window.innerHeight-160));
+      g.style.left = x + 'px';
+      g.style.top = y + 'px';
+      g.style.fontSize = (12 + Math.random()*28) + 'px';
+      document.body.appendChild(g);
+      setTimeout(()=> g.remove(), 2200);
+    }
+  }
+
+  // mouse subtle glyph manifest
+  let lastMove = 0;
+  window.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastMove > 650 && Math.random() > 0.68) {
+      lastMove = now;
+      const g = document.createElement('div');
+      g.className = 'quantum-glyph';
+      const glyphs = tourState.getState().glyphs;
+      g.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+      g.style.left = (e.pageX + (Math.random()*40-20)) + 'px';
+      g.style.top = (e.pageY + (Math.random()*40-20)) + 'px';
+      g.style.fontSize = (10 + Math.random()*20) + 'px';
+      document.body.appendChild(g);
+      setTimeout(()=> g.remove(), 1800);
+    }
+  });
+
+  // NOTES: highlight when user types certain keywords (UX)
+  const notesInput = document.getElementById('notes');
+  notesInput.addEventListener('input', () => {
+    const v = notesInput.value.toLowerCase();
+    if (v.includes('محطة') || v.includes('تايم وورب') || v.includes('نقطة زمنية') || v.includes('البوابة')) {
+      notesInput.style.borderColor = 'rgba(255,217,102,0.9)';
+      setTimeout(()=> notesInput.style.borderColor = '', 1600);
+    }
+  });
+
+  // GOLD MATRIX: generate columns programmatically for variation (responsive safe)
+  (function buildGoldMatrix(){
+    const container = document.getElementById('goldMatrix');
+    if(!container) return;
+    const cols = Math.max(8, Math.floor(window.innerWidth / 80));
+    const glyphSet = ['#','𓂀','𓂋','⟡','ᛣ','𐌗','※','∴','✦'];
+    for(let i=0;i<cols;i++){
+      const col = document.createElement('div');
+      col.className = 'column';
+      const left = (i*(100/cols)) + (Math.random()*2 - 1);
+      col.style.left = left + '%';
+      col.style.fontSize = (10 + Math.random()*12) + 'px';
+      col.style.opacity = (0.08 + Math.random()*0.22);
+      col.style.animationDuration = (12 + Math.random()*22) + 's';
+      col.style.top = (-20 - Math.random()*60) + '%';
+      // construct a long string of glyphs
+      let str = '';
+      const len = 12 + Math.floor(Math.random()*28);
+      for(let j=0;j<len;j++){
+        str += glyphSet[Math.floor(Math.random()*glyphSet.length)];
+      }
+      col.textContent = str;
+      container.appendChild(col);
+    }
+  })();
+
+  // Accessibility: focus handling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', (ev)=> {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if(el){ el.setAttribute('tabindex','-1'); el.focus(); }
+    });
+  });
+
+  // On load: restore last draft into form (if present)
+  (function restoreDraft(){
+    try{
+      const raw = localStorage.getItem('lastBookingDraft');
+      if(!raw) return;
+      const draft = JSON.parse(raw);
+      if(draft.pkg) document.getElementById('package').value = draft.pkg;
+      if(draft.date) document.getElementById('date').value = draft.date;
+      if(draft.name) document.getElementById('name').value = draft.name;
+      if(draft.people) document.getElementById('people').value = draft.people;
+      if(draft.notes) document.getElementById('notes').value = draft.notes;
+    }catch(e){}
+  })();
+
+  // small progressive enhancement: keyboard shortcut "T" opens booking
+  window.addEventListener('keydown', (e)=>{
+    if(e.key.toLowerCase() === 't' && !e.metaKey && !e.ctrlKey){
+      e.preventDefault();
+      const el = document.getElementById('booking-form');
+      el.setAttribute('tabindex','-1'); el.focus();
+      spawnGlyphs(6);
+    }
+  });
+
+  // lightweight telemetry opt-out banner (local-only) — shows once unless dismissed
+  (function telemetryBanner(){
+    if(localStorage.getItem('telemetryConsent')) return;
+    const b = document.createElement('div');
+    b.style.position='fixed'; b.style.right='18px'; b.style.bottom='18px'; b.style.zIndex=9999;
+    b.style.background='rgba(0,0,0,0.6)'; b.style.color='#fff'; b.style.padding='10px 12px'; b.style.borderRadius='10px';
+    b.style.fontSize='13px'; b.innerHTML = 'خيارات الخصوصية: إحفظ بيانات الحجز محليًا فقط <button id="teleSave" style="margin-inline-start:8px;padding:6px 8px;border-radius:8px;border:0;cursor:pointer">حسنا</button>';
+    document.body.appendChild(b);
+    document.getElementById('teleSave').addEventListener('click', ()=>{
+      localStorage.setItem('telemetryConsent','local-only'); b.remove();
+    });
+  })();
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlArab Club 777 – The Pharaonic Spirit</title>
+  <style>
+    /* ---------------------------------------------------
+       Basic layout & typography
+    --------------------------------------------------- */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #333;
+    }
+
+    a { color: #2e86de; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      background: #2e86de;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    nav {
+      background: #f8f8f8;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 0.5rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a { margin: 0 1rem; font-weight: 600; }
+
+    /* ---------------------------------------------------
+       Section styling
+    --------------------------------------------------- */
+    section {
+      margin: 2rem auto;
+      max-width: 900px;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #dcdcdc;
+      border-radius: 8px;
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+      color: #222;
+      border-bottom: 2px solid #2e86de;
+      padding-bottom: 0.2rem;
+    }
+
+    .subsection {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-left: 4px solid #2e86de;
+      background: #fafafa;
+      border-radius: 4px;
+    }
+
+    .subsection h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.4rem;
+      color: #1d2a3c;
+    }
+
+    .subsection p,
+    .subsection table {
+      color: #555;
+    }
+
+    .subsection img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    /* 2‑column grid on wider screens */
+    @media (min-width: 768px) {
+      .subsection { width: calc(50% - 1rem); float: left; margin-right: 1rem; }
+      .subsection:nth-child(odd){ clear: left; }
+      .subsection:nth-child(even){ margin-right: 0; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 2rem;
+      border-top: 1px solid #e0e0e0;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ===== Header ===== -->
+  <header>
+    AlArab Club 777 – The Pharaonic Spirit
+  </header>
+
+  <!-- ===== Navigation ===== -->
+  <nav>
+    <a href="#safari">01 Safari</a>
+    <a href="#pyramids">02 Pyramids</a>
+    <a href="#spirit-portal">03 Spirit Portal</a>
+    <a href="#booking">04 Booking</a>
+    <a href="#partners">05 Partners</a>
+    <a href="#media-center">06 Media</a>
+    <a href="#family-portal">07 Family Portal</a>
+    <a href="#arabnetwork-ai">08 AI Network</a>
+    <a href="#moral-ai">09 Moral AI</a>
+    <a href="#matrix-777">10 Matrix</a>
+    <a href="#meta">Meta</a>
+  </nav>
+
+  <!-- ===== 01 Safari ===== -->
+  <section id="safari">
+    <h2>01_safari_𓃰 Desert Adventures</h2>
+
+    <div class="subsection">
+      <h3>desert_safari/  ⛰️  ← Into the Sand</h3>
+      <p>Ride through vast dunes on a 4×4 safari, guided through ancient stone, shimmering mirages and hidden oases.  Meet the local nomads and discover their daily stories.</p>
+      <img src="images/desert_safari.jpg" alt="Desert safari adventure">
+    </div>
+
+    <div class="subsection">
+      <h3>camel_ride/  🐫  ← Ride with the Ancients</h3>
+      <p>Experience the timeless feel of riding a camel past the golden dunes.  Learn how camels shaped desert culture and enjoy a sunset ride that feels like stepping back in history.</p>
+      <img src="images/camel_ride.jpg" alt="Camel ride desert">
+    </div>
+
+    <div class="subsection">
+      <h3>quad_bike/  🏍️  ← The Pharaoh’s Speed</h3>
+      <p>Accelerate through dunes on a quad bike.  Feel the wind, negotiate sharp turns, and get that true adrenaline rush while respecting the sand’s ancient spirits.</p>
+      <img src="images/quad_bike.jpg" alt="Quad bike desert adventure">
+    </div>
+  </section>
+
+  <!-- ===== 02 Pyramids ===== -->
+  <section id="pyramids">
+    <h2>02_pyramids_𓂀 Timeless Wonders</h2>
+
+    <div class="subsection">
+      <h3>day_tour/  ☀️  ← Light of Ra – Day Visit</h3>
+      <p>Guided day‑tour of the pyramids.  Learn how the builders used sun‑aligned pillars, the history behind each face, and their unique symbolism.</p>
+      <img src="images/pyramids_day.jpg" alt="Day tour of pyramids">
+    </div>
+
+    <div class="subsection">
+      <h3>night_experience/  🌙  ← Secrets Under the Stars</h3>
+      <p>Experience dusk and night at the pyramids.  Soft lantern light, stargazing, and echoing footsteps make for a surreal, almost other‑worldly atmosphere.</p>
+      <img src="images/pyramids_night.jpg" alt="Night experience at pyramids">
+    </div>
+
+    <div class="subsection">
+      <h3>hidden_spots/  🧿  ← Spirit Corners & Energy Spots</h3>
+      <p>Explore concealed chambers, mystic pools, and energy spots that locals say resonate with the cosmic forces of the pharaohs.</p>
+      <img src="images/hidden_spots.jpg" alt="Hidden spots">
+    </div>
+  </section>
+
+  <!-- ===== 03 Spirit Portal ===== -->
+  <section id="spirit-portal">
+    <h2>03_spirit_portal_𓋹 بوابة الروح السباعية</h2>
+
+    <div class="subsection">
+      <h3>dendera_temple/  🏛️  ← Temple of Dendera + 3D Portals</h3>
+      <p>Walk the halls of Dendera, with 3D portals that reveal hidden chambers and offer VR walkthroughs of the temple’s lost history.</p>
+      <img src="images/dendera_temple.jpg" alt="Temple of Dendera">
+    </div>
+
+    <div class="subsection">
+      <h3>sound_healing/  🔊  ← Frequency Healing 777Hz</h3>
+      <p>Listen to ambient soundscapes tuned to 777Hz, promoting relaxation, focus, and a sense of connection to ancient rituals.</p>
+      <img src="images/sound_healing.jpg" alt="Sound healing">
+    </div>
+
+    <div class="subsection">
+      <h3>portals_energy/  🌌  ← Energy Gates & Rites</h3>
+      <p>Follow guided energy‑gate rituals, step‑by‑step, to align your personal aura with the temple’s sacred layout.</p>
+      <img src="images/portals_energy.jpg" alt="Energy gates">
+    </div>
+
+    <div class="subsection">
+      <h3>soaul_scripts/  📜  ← Ritual Scripts & Chants</h3>
+      <p>Download ritual scripts in Arabic, transliteration, and English.  Use them in daily meditation or group ceremonies.</p>
+      <img src="images/soaul_scripts.jpg" alt="Ritual scripts">
+    </div>
+
+    <div class="subsection">
+      <h3>bat_seal/  🦇  ← The Guardian Gate (Hidden)</h3>
+      <p>Find the hidden guardian gate, accessible only at certain lunar phases.  It houses a carved bat seal—an ancient symbol of protection.</p>
+      <img src="images/bat_seal.jpg" alt="Bat seal">
+    </div>
+  </section>
+
+  <!-- ===== 04 Booking ===== -->
+  <section id="booking">
+    <h2>04_booking_𓃠 Offers & Gate Access</h2>
+
+    <div class="subsection">
+      <h3>offer_777_discount/  🏷️  ← Pharaoh’s 777 Blessing</h3>
+      <p>Secure a 10% early‑bird discount for the full “Pharaoh’s 777 Blessing” package, covering safari, temple visits, and exclusive experiences.</p>
+      <img src="images/offer_777_discount.jpg" alt="777 discount offer">
+    </div>
+
+    <div class="subsection">
+      <h3>whatsapp_form/  📲  ← Gatekeeper Contact</h3>
+      <p>Click to start a WhatsApp chat with our gatekeepers—a fast path for reservations, questions, or custom itineraries.</p>
+      <img src="images/whatsapp_form.jpg" alt="WhatsApp contact">
+    </div>
+  </section>
+
+  <!-- ===== 05 Partners ===== -->
+  <section id="partners">
+    <h2>05_partners_𓎛 Community Grid</h2>
+
+    <div class="subsection">
+      <h3>bazars/  🏺  ← Bazaars of Nazlet El‑Samman</h3>
+      <p>Explore bazars filled with craft, spice, and artisan textiles.  Each stall tells a story of regional heritage.</p>
+      <img src="images/bazars.jpg" alt="Bazaars">
+    </div>
+
+    <div class="subsection">
+      <h3>restaurants/  🍽️  ← Flavors of the Pyramid</h3>
+      <p>Taste authentic Egyptian dishes re‑interpreted with a pharaonic twist.  Our restaurants serve a modern take on time‑tested recipes.</p>
+      <img src="images/restaurants.jpg" alt="Restaurant">
+    </div>
+
+    <div class="subsection">
+      <h3>guest_houses/  🛏️  ← Guardians of Rest</h3>
+      <p>Stay in boutique guest houses that fuse historic décor with contemporary comforts—each a portal to restful repose.</p>
+      <img src="images/guest_houses.jpg" alt="Guest houses">
+    </div>
+  </section>
+
+  <!-- ===== 06 Media Center ===== -->
+  <section id="media-center">
+    <h2>06_media_center_𓊽 Memory Scrolls</h2>
+
+    <div class="subsection">
+      <h3>photos_hd/  📸  ← High‑Res Sacred Shots</h3>
+      <p>Full‑resolution gallery of temples, dunes, and ceremonies.  Use the lightbox to enlarge images.</p>
+      <img src="images/photos_hd.jpg" alt="High‑res photos">
+    </div>
+
+    <div class="subsection">
+      <h3>videos/  🎞️  ← Cinematic Scrolls</h3>
+      <p>Watch 360° tours, event highlights, or narrated documentaries directly on the page.</p>
+      <img src="images/videos.jpg" alt="Video thumbnails">
+    </div>
+
+    <div class="subsection">
+      <h3>voiceovers/  🎤  ← Spoken Invocations</h3>
+      <p>Download audio clips of chants, guided meditations, and storytelling—ideal for personal reflection.</p>
+      <img src="images/voiceovers.jpg" alt="Voiceover samples">
+    </div>
+  </section>
+
+  <!-- ===== 07 Family Portal ===== -->
+  <section id="family-portal">
+    <h2>07_family_portal_𓇌 Layered Realms</h2>
+
+    <div class="subsection">
+      <h3>layer_1/  👶  ← Angelic Zone (Kids)</h3>
+      <p>Kids get a dedicated zone with interactive puzzles, story workshops, and myth‑based games.</p>
+      <img src="images/layer_1.jpg" alt="Angelic zone">
+    </div>
+
+    <div class="subsection">
+      <h3>layer_2/  🌠  ← Soul GPT Portal</h3>
+      <p>AI chat that answers fun questions about pharaohs, myths, and family history in a child‑friendly tone.</p>
+      <img src="images/layer_2.jpg" alt="AI portal">
+    </div>
+
+    <div class="subsection">
+      <h3>background_assets/  🌈  ← Visuals & Ambient</h3>
+      <p>Download background themes and ambient soundscapes for use in personal projects.</p>
+      <img src="images/background_assets.jpg" alt="Background assets">
+    </div>
+
+    <div class="subsection">
+      <h3>final_mp3/  🎧  ← Guided Audio Journey</h3>
+      <p>Download a narrated audio story complete with music and sound effects—ideal for bedtime.</p>
+      <img src="images/final_mp3.jpg" alt="Guided audio">
+    </div>
+  </section>
+
+  <!-- ===== 08 Arab Network AI ===== -->
+  <section id="arabnetwork-ai">
+    <h2>08_arabnetwork_ai_𓆃 Awakening Systems</h2>
+
+    <div class="subsection">
+      <h3>strategy_docs/  📚  ← Digital Scrolls of Vision</h3>
+      <p>Read our AI strategy PDFs that map the future of the pharaonic branding and community outreach.</p>
+      <img src="images/strategy_docs.jpg" alt="Strategy docs">
+    </div>
+
+    <div class="subsection">
+      <h3>trend_tracking/  📈  ← Trend Stars Chart</h3>
+      <p>Live dashboards that track trending topics, sentiment, and engagement across social platforms.</p>
+      <img src="images/trend_tracking.jpg" alt="Trend tracking">
+    </div>
+
+    <div class="subsection">
+      <h3>press_kits/  🗞️  ← 777 Launch Archives</h3>
+      <p>Press releases, media contacts, and archived interviews to help journalists and partners.</p>
+      <img src="images/press_kits.jpg" alt="Press kits">
+    </div>
+  </section>
+
+  <!-- ===== 09 Moral AI ===== -->
+  <section id="moral-ai">
+    <h2>09_moral_ai_𓆑 Conscious Codes</h2>
+
+    <div class="subsection">
+      <h3>awareness_design/  🧠  ← UX of Collective Spirit</h3>
+      <p>Discover how we design user flows that promote spiritual awareness, community inclusion, and ethical choice.</p>
+      <img src="images/awareness_design.jpg" alt="Awareness design">
+    </div>
+
+    <div class="subsection">
+      <h3>social_fixes/  🫱  ← AI for Justice</h3>
+      <p>Examples of AI‑driven initiatives that detect bias, promote restorative justice, and empower underrepresented groups.</p>
+      <img src="images/social_fixes.jpg" alt="Social fixes">
+    </div>
+
+    <div class="subsection">
+      <h3>ethical_protocols/  ⚖️  ← Spiritual Compliance</h3>
+      <p>Read the ethical guidelines that govern our AI systems—fairness, transparency, and adherence to the pharaonic code.</p>
+      <img src="images/ethical_protocols.jpg" alt="Ethical protocols">
+    </div>
+  </section>
+
+  <!-- ===== 10 Matrix777 ===== -->
+  <section id="matrix-777">
+    <h2>10_matrix777_𓊉 The Inner Temple</h2>
+
+    <div class="subsection">
+      <h3>inner_portals/  🔑  ← Dimensional Keys</h3>
+      <p>Explore the inner portal map, featuring interactive diagrams and key‑codes to unlock deeper layers.</p>
+      <img src="images/inner_portals.jpg" alt="Inner portals">
+    </div>
+
+    <div class="subsection">
+      <h3>encrypted_html/  💾  ← Sacred HTML & Code</h3>
+      <p>Download the core HTML files, encrypted for authenticity checks and secure collaboration.</p>
+      <img src="images/encrypted_html.jpg" alt="Encrypted HTML">
+    </div>
+
+    <div class="subsection">
+      <h3>guardian_signs/  🛡️  ← Hieroglyphic Symbols</h3>
+      <p>Catalog of guardian symbols—each one explained with a legend and QR code to unlock short videos.</p>
+      <img src="images/guardian_signs.jpg" alt="Guardian signs">
+    </div>
+
+    <div class="subsection">
+      <h3>prophecies/  🔮  ← Prophetic Seals & Codes</h3>
+      <p>Access encrypted prophecies, symbols, and codified predictions that guide the community’s future.</p>
+      <img src="images/prophecies.jpg" alt="Prophecies">
+    </div>
+  </section>
+
+  <!-- ===== Meta ===== -->
+  <section id="meta">
+    <h2>meta_𓍯 Digital Backbone</h2>
+
+    <div class="subsection">
+      <h3>structure_docs/  📐  ← Sitemap Logic</h3>
+      <p>Download a detailed PDF diagram of the site structure and content hierarchy.</p>
+      <img src="images/structure_docs.jpg" alt="Structure docs">
+    </div>
+
+    <div class="subsection">
+      <h3>api_scripts/  🔧  ← Automation Layers</h3>
+      <p>Explore our API scripts and webhook handlers that automate booking, content updates, and more.</p>
+      <img src="images/api_scripts.jpg" alt="API scripts">
+    </div>
+
+    <div class="subsection">
+      <h3>versions/  🌀  ← Backups & Layers</h3>
+      <p>Check the version history, backup archives, and the evolution of each component.</p>
+      <img src="images/versions.jpg" alt="Versions">
+    </div>
+  </section>
+
+  <footer>
+    © 2025 AlArab Club 777 – All rights reserved.
+  </footer>
+</body>
+</html>
+
+
+‏فرعنيها
+
+<!doctype html>
+<!--
+  Giza Pyramids Interactive Portal — AlArab Club 777
+  Interactive booking experience for pyramid tours and activities
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Giza Pyramids Portal — AlArab Club 777</title>
+  <meta name="description" content="Interactive portal for Giza Pyramids tours and activities. Book camel rides, desert safaris, guided tours, and complete Egyptian adventures with AlArab Club 777." />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Giza Pyramids Portal — AlArab Club 777" />
+  <meta property="og:description" content="Experience the magic of the pyramids with interactive booking and immersive tours." />
+  <meta property="og:image" content="https://alarabclub777.vercel.app/assets/pyramids-og.jpg" />
+  <meta property="og:type" content="website" />
+  <style>
+  :root{
+    --bg:#0a0b0f; --gold:#ffd66b; --muted:#9aa3b2; --accent:#4aa3ff; --red:#dc2626;
+  }
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, sans-serif;background:var(--bg);color:var(--gold);overflow:hidden;-webkit-font-smoothing:antialiased}
+  
+  /* Layers */
+  .matte{position:fixed;inset:0;z-index:0;background:
+    radial-gradient(1200px 600px at 15% 25%, rgba(255,214,107,.04), transparent 15%),
+    radial-gradient(900px 500px at 85% 75%, rgba(220,38,38,.03), transparent 15%),
+    linear-gradient(180deg, rgba(0,0,0,.4), rgba(0,0,0,.7));backdrop-filter: blur(8px)}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);background-size:8px 8px;opacity:.15}
+  .dot-pattern{position:fixed;inset:0;z-index:2;pointer-events:none;background-image:radial-gradient(rgba(255,214,107,0.04) 1px, transparent 1px);background-size:40px 40px;opacity:.1}
+  canvas#scene{position:fixed;inset:0;z-index:3;display:block}
+  
+  /* UI */
+  #ui{position:fixed;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;padding:20px;pointer-events:none}
+  header{pointer-events:auto;margin-top:10px;background:rgba(0,0,0,0.5);padding:15px 25px;border-radius:999px;color:var(--gold);font-weight:700;box-shadow:0 10px 40px rgba(0,0,0,.7);border:1px solid rgba(255,214,107,.1)}
+  .subtitle{margin-top:8px;color:var(--muted);font-size:14px;text-align:center}
+  .hint{position:fixed;left:20px;top:20px;color:var(--muted);font-size:13px;pointer-events:none;background:rgba(0,0,0,.3);padding:10px;border-radius:8px}
+  
+  .services{pointer-events:auto;width:100%;max-width:1200px;margin:clamp(40px,10vh,80px) auto 100px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 20px;opacity:0;transform:translateY(25px);transition:all .8s ease}
+  .services.visible{opacity:1;transform:none}
+  .service-card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border-radius:16px;padding:24px;border:1px solid rgba(255,214,107,.08);backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,.6);pointer-events:auto;transition:transform .3s ease, box-shadow .3s ease}
+  .service-card:hover{transform:translateY(-5px);box-shadow:0 15px 50px rgba(255,214,107,.1)}
+  .service-card h3{margin:0 0 10px;color:var(--gold);font-size:1.1rem}
+  .service-card p{margin:0 0 8px;color:var(--muted);font-size:0.9rem;line-height:1.4}
+  .service-card .price{margin-top:12px;color:var(--accent);font-weight:800;font-size:1.1rem}
+  .service-card .duration{color:rgba(255,214,107,.7);font-size:0.85rem;margin-top:4px}
+  .service-card a.btn{display:inline-block;margin-top:15px;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--gold),#ffb84d);color:#0a0b0f;text-decoration:none;font-weight:700;transition:all .3s ease}
+  .service-card a.btn:hover{transform:scale(1.05);box-shadow:0 5px 20px rgba(255,214,107,.3)}
+  
+  .ascii-bg{position:fixed;top:12%;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none;color:rgba(255,214,107,0.06);font-size:14px;line-height:14px;white-space:pre;text-align:center}
+  
+  .orb-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9;pointer-events:auto}
+  .orb{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(160deg,#0a0b0f,#1a1b1f);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 50px rgba(255,214,107,.08);cursor:pointer;transition:transform .2s}
+  .orb.pulse{animation:orbPulse 1800ms infinite ease-in-out}
+  @keyframes orbPulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .orb .dots{width:56px;height:56px;border-radius:50%;background:
+     radial-gradient(circle at 70% 30%, #ffd66b 0 2px, transparent 2.5px) 0 0/8px 8px,
+     radial-gradient(circle at 20% 80%, #4aa3ff 0 2px, transparent 2.5px) 4px 4px/8px 8px,
+     radial-gradient(circle at 40% 40%, #dc2626 0 2px, transparent 2.5px) 2px 6px/8px 8px, #0a0b0f;box-shadow:inset 0 0 15px rgba(255,215,120,.06)}
+  
+  .chat-toggle{position:fixed;right:20px;bottom:20px;z-index:12;width:65px;height:65px;border-radius:50%;background:linear-gradient(180deg,var(--gold),#ffb84d);display:grid;place-items:center;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.1);pointer-events:auto;font-size:24px;transition:transform .3s ease}
+  .chat-toggle:hover{transform:scale(1.1)}
+  
+  .chat-window{position:fixed;right:20px;bottom:90px;width:380px;max-width:94vw;height:540px;background:rgba(10,11,15,0.98);color:#fff;border-radius:15px;box-shadow:0 35px 140px rgba(0,0,0,.8);z-index:13;display:none;flex-direction:column;pointer-events:auto;border:1px solid rgba(255,214,107,.1)}
+  .chat-header{padding:15px;border-bottom:1px solid rgba(255,255,255,.05);font-weight:700;background:rgba(255,214,107,.02)}
+  .chat-body{flex:1;padding:15px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+  .chat-input{display:flex;padding:12px;border-top:1px solid rgba(255,255,255,.05);background:rgba(255,214,107,.02)}
+  .chat-input input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:14px}
+  .chat-input button{margin-left:10px;padding:10px 12px;border-radius:10px;background:var(--gold);border:0;color:#0a0b0f;font-weight:700;cursor:pointer}
+  .msg{max-width:85%;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.4}
+  .msg.agent{background:rgba(255,215,107,.1);align-self:flex-start;color:var(--gold)}
+  .msg.user{background:rgba(255,255,255,.06);align-self:flex-end;color:#fff}
+  
+  .mouse-dot{position:fixed;width:15px;height:15px;border-radius:50%;pointer-events:none;z-index:11;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(255,214,107,.8), rgba(255,214,107,.2));box-shadow:0 0 25px rgba(255,214,107,.3)}
+  
+  footer.portal-footer{position:fixed;left:0;right:0;bottom:0;z-index:14;display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0.6));backdrop-filter: blur(10px);pointer-events:auto;border-top:1px solid rgba(255,214,107,.05)}
+  .booking-actions{display:flex;gap:12px;align-items:center}
+  .btn-book{padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,var(--gold),#ffb84d);color:#0a0b0f;text-decoration:none;font-weight:800;transition:all .3s ease}
+  .btn-book:hover{transform:scale(1.05);box-shadow:0 5px 25px rgba(255,214,107,.4)}
+  .muted{color:var(--muted);font-size:13px}
+  
+  @media (max-width:900px){ 
+    .services{grid-template-columns:repeat(2,1fr)} 
+    .chat-window{width:94vw;right:3%;left:3%} 
+  }
+  @media (max-width:600px){ 
+    .services{grid-template-columns:1fr} 
+    header{font-size:1.1rem;padding:12px 20px} 
+  }
+  </style>
+</head>
+<body>
+
+  <div class="matte" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="dot-pattern" aria-hidden="true"></div>
+  <canvas id="scene"></canvas>
+
+  <div class="ascii-bg" aria-hidden="true">
+       /\\    AlArab Club 777 — Gateway to Ancient Egypt
+      /  \\   Interactive Portal for Pyramid Adventures
+     /    \\  Book Tours • Explore • Experience Magic
+    /      \\ 
+   /   /\\   \\    
+  /___/__\\___\\____
+        ||||
+  </div>
+
+  <div id="ui">
+    <div class="orb-wrap">
+      <div class="orb pulse" id="orb" title="Activate Portal" role="button" aria-pressed="false">
+        <div class="dots" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <header>
+      AlArab Club 777 — Giza Pyramids Portal
+      <div class="subtitle">Your Gateway to Ancient Egypt</div>
+    </header>
+    <div class="hint">Mouse: Attract Particles • Click: Repel • Double Click: Pyramid Formation</div>
+
+    <section class="services" id="services" aria-hidden="true">
+      <div class="service-card" data-service="pyramid-tour">
+        <h3>🏛️ Pyramid Explorer</h3>
+        <p>Journey through Giza's ancient pyramid complex with expert archaeological guides. Discover hidden chambers and ancient secrets.</p>
+        <div class="duration">Full Day Experience</div>
+        <div class="price">$45 - $85 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Adventure</a>
+      </div>
+      
+      <div class="service-card" data-service="camel-safari">
+        <h3>🐪 Desert Camel Safari</h3>
+        <p>Experience the timeless journey across golden dunes on camelback. Sunrise and sunset rides available with traditional Bedouin guides.</p>
+        <div class="duration">2-4 Hours</div>
+        <div class="price">$25 - $50 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Safari</a>
+      </div>
+      
+      <div class="service-card" data-service="horse-riding">
+        <h3>🐎 Royal Horse Adventure</h3>
+        <p>Ride like ancient pharaohs around the pyramid complex. Professional horses and safety equipment provided for all skill levels.</p>
+        <div class="duration">1-3 Hours</div>
+        <div class="price">$30 - $60 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Ride</a>
+      </div>
+      
+      <div class="service-card" data-service="complete-package">
+        <h3>👑 Complete Egyptian Experience</h3>
+        <p>Ultimate package: pyramid tours, camel safari, horse riding, traditional lunch, and sunset viewing. Perfect for creating memories.</p>
+        <div class="duration">Full Day + Evening</div>
+        <div class="price">$120 - $250 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Package</a>
+      </div>
+      
+      <div class="service-card" data-service="saqqara">
+        <h3>🏺 Saqqara Archaeological Site</h3>
+        <p>Explore the ancient Saqqara complex with its step pyramids and tombs. Uncover 4,000 years of Egyptian history with expert guides.</p>
+        <div class="duration">Half Day</div>
+        <div class="price">$35 - $70 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Exploration</a>
+      </div>
+      
+      <div class="service-card" data-service="buggy-adventure">
+        <h3>🏎️ Desert Buggy Adventure</h3>
+        <p>High-speed desert exploration in modern off-road buggies. Navigate dunes and ancient paths with professional guides and safety gear.</p>
+        <div class="duration">2-3 Hours</div>
+        <div class="price">$60 - $120 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Thrill</a>
+      </div>
+      
+      <div class="service-card" data-service="sound-light">
+        <h3>🌙 Sound & Light Show</h3>
+        <p>Evening spectacular at the pyramids with narrated light projections telling the story of ancient Egypt. Magical nighttime experience.</p>
+        <div class="duration">1.5 Hours</div>
+        <div class="price">$25 - $45 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Show</a>
+      </div>
+      
+      <div class="service-card" data-service="hotel-transfer">
+        <h3>🚗 Airport & Hotel Transfers</h3>
+        <p>Comfortable and reliable transportation service. Professional drivers, luxury vehicles, 24/7 availability for all Cairo and Giza locations.</p>
+        <div class="duration">As Needed</div>
+        <div class="price">$15 - $40 USD</div>
+        <a class="btn" data-action="book" href="#" role="button">Book Transfer</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Chat System -->
+  <div class="chat-toggle" id="chatToggle" title="Chat with AlArab Club">💬</div>
+  <div class="chat-window" id="chatWindow" aria-hidden="true">
+    <div class="chat-header">AlArab Club 777 — Tour Assistant</div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Ask about tours, pricing, or type 'book' to reserve..." />
+      <button id="chatSend">Send</button>
+    </div>
+  </div>
+
+  <div class="mouse-dot" id="mouseDot" aria-hidden="true"></div>
+
+  <!-- Footer with booking actions -->
+  <footer class="portal-footer" role="contentinfo">
+    <div style="display:flex;align-items:center;gap:15px;">
+      <div style="width:240px;height:135px;border-radius:10px;overflow:hidden;background:#000;display:grid;place-items:center">
+        <iframe id="ytplayer" width="240" height="135" src="https://www.youtube.com/embed/FYEaUdAWQoc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Giza Pyramids Tour Video"></iframe>
+      </div>
+      <div>
+        <div class="muted">Contact AlArab Club 777</div>
+        <div style="margin-top:8px;"><a id="whatsappLink" class="btn-book" href="https://wa.me/201002446123?text=Hello%20AlArab%20Club%20777%2C%20I%27m%20interested%20in%20booking%20a%20Giza%20pyramids%20tour" target="_blank" rel="noopener noreferrer">WhatsApp Booking</a></div>
+        <div class="muted" style="margin-top:8px;">Email: <a id="mailLink" href="mailto:alarabclub777@gmail.com" style="color:var(--gold);text-decoration:underline">alarabclub777@gmail.com</a></div>
+      </div>
+    </div>
+
+    <div class="booking-actions">
+      <a id="bookNow" class="btn-book" href="https://alarabclub777.vercel.app/" target="_blank" rel="noopener noreferrer">View All Services</a>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="font-size:12px;color:var(--muted);">Scan QR for instant booking</div>
+        <img id="qrImg" alt="QR Code for Booking" width="80" height="80"
+             src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https%3A//wa.me/201002446123%3Ftext%3DHello%2520AlArab%2520Club%2520777%252C%2520I%2527m%2520interested%2520in%2520Giza%2520tours&choe=UTF-8" />
+      </div>
+    </div>
+  </footer>
+
+<script>
+/* ========= Enhanced Canvas Animation System ========= */
+(function(){
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
+  let DPR = Math.min(2, window.devicePixelRatio || 1);
+  let W = 0, H = 0, CX = 0, CY = 0;
+  let particles = [], sandStorm = [], ripples = [], pyramidParticles = [], exploded=false, pyramidAngle=0, autoTimer=0;
+
+  const EGYPTIAN_GLYPHS = ['𓂀','𓆣','𓋹','𓊹','𓏏','𓎛','𓃭','𓇳','𓈖','𓊽','𓊪','𓈙','▲','△','◈','▴','◇','◆','✦','✧','✺','*','+','•','⬟','⬢','⬡'];
+  const darkSet = new Set(['𓎛','𓃭','𓇳','𓈖','▴','▲','◈','𓊽','◆','⬢']);
+
+  function fit(){
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = canvas.width = Math.floor(innerWidth * DPR);
+    H = canvas.height = Math.floor(innerHeight * DPR);
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    CX = innerWidth/2; CY = innerHeight*0.6;
+    buildGrid();
+    buildPyramidParticles();
+  }
+  window.addEventListener('resize', fit);
+
+  function buildGrid(){
+    particles.length = 0;
+    const cols = Math.floor(innerWidth/32);
+    const rows = Math.floor(innerHeight/32);
+    for(let y=0;y<rows;y++){
+      for(let x=0;x<cols;x++){
+        const px = x * (innerWidth/cols) + (Math.random()-0.5)*6;
+        const py = y * (innerHeight/rows) + (Math.random()-0.5)*6;
+        particles.push({x:px,y:py,bx:px,by:py,vx:0,vy:0,ch: EGYPTIAN_GLYPHS[(x+y)%EGYPTIAN_GLYPHS.length], shade: ((x+y)%3===0?0.6:0.95)});
+      }
+    }
+  }
+
+  function buildPyramidParticles(){
+    pyramidParticles.length = 0;
+    const baseSize = Math.max(12, Math.min(30, Math.floor(Math.cbrt((innerWidth*innerHeight)/100))));
+    const spacing = Math.min(32, Math.max(15, Math.floor(Math.min(innerWidth, innerHeight) / 40)));
+    let idx=0;
+    for(let layer=0; layer<baseSize; layer++){
+      const n = baseSize - layer;
+      const y = CY - layer * spacing * 0.85;
+      for(let i=0;i<n;i++){
+        for(let j=0;j<n;j++){
+          const ox = CX + (i - n/2) * spacing + (j - n/2) * spacing * 0.5;
+          const oz = (j - n/2) * spacing * 0.65;
+          const ch = EGYPTIAN_GLYPHS[(idx++) % EGYPTIAN_GLYPHS.length];
+          const shade = darkSet.has(ch) ? 0.65 : 0.98;
+          pyramidParticles.push({ox, oy:y + (j-n/2)*spacing*0.2, oz, x:ox + (Math.random()-0.5)*8, y:y+(Math.random()-0.5)*8, vx:0,vy:0,vz:0, ch, shade});
+        }
+      }
+    }
+  }
+
+  function spawnSandStorm(){
+    if(sandStorm.length > 500) sandStorm.shift();
+    const x = Math.random()*innerWidth;
+    sandStorm.push({x, y:-25, ch: EGYPTIAN_GLYPHS[(Math.random()*EGYPTIAN_GLYPHS.length)|0], vy:1.2+Math.random()*2.5, alpha:0.95});
+  }
+  setInterval(spawnSandStorm, 90);
+
+  const mouse = {x:CX,y:CY,down:false};
+  window.addEventListener('mousemove', e=>{ 
+    mouse.x=e.clientX; mouse.y=e.clientY; 
+    document.getElementById('mouseDot').style.left = e.clientX + 'px'; 
+    document.getElementById('mouseDot').style.top = e.clientY + 'px';
+  });
+  window.addEventListener('pointerdown', e=>{ 
+    mouse.down=true; 
+    ripple(e.clientX,e.clientY,1.2); 
+    burst(e.clientX,e.clientY,1.6); 
+  });
+  window.addEventListener('pointerup', ()=>{ mouse.down=false; });
+  window.addEventListener('dblclick', ()=>{ toggleExplode(); });
+
+  function ripple(x,y,k=1){ 
+    ripples.push({x,y,r:10*k,life:1}); 
+  }
+  
+  function burst(cx,cy,power=1){
+    for(const p of pyramidParticles){
+      const dx = p.x - cx, dy = p.y - cy; const d = Math.hypot(dx,dy)+1e-4;
+      const f = (power*1.4) * (140 / (d));
+      p.vx += (dx/d) * f * (0.7 + Math.random()*1.0);
+      p.vy += (dy/d) * f * (0.7 + Math.random()*1.0);
+      p.vz += (Math.random()-0.5) * (f*0.25);
+    }
+    for(const g of particles){
+      const dx=g.x-cx, dy=g.y-cy, d=Math.hypot(dx,dy)+1e-4;
+      const f=(power*1.0)*(100/(d));
+      g.vx += (dx/d) * f * (0.4+Math.random()*0.7);
+      g.vy += (dy/d) * f * (0.4+Math.random()*0.7);
+    }
+  }
+
+  function toggleExplode(){ 
+    exploded = !exploded; 
+    if(exploded) burst(CX,CY,1.8); 
+    else burst(CX,CY,1.0); 
+  }
+
+  function egyptianPalette(t){
+    const hue = (35 + 200 * t) % 360;
+    const sat = 75 - 20 * Math.sin(t * Math.PI * 2);
+    const lig = 60 + 8 * Math.cos(t * Math.PI * 2);
+    return `hsl(${hue} ${sat}% ${lig}%)`;
+  }
+
+  let last = performance.now();
+  function tick(now){
+    requestAnimationFrame(tick);
+    const dt = Math.min(60, now - last); last = now;
+    autoTimer += dt;
+
+    // Pyramid particles physics
+    for(const p of pyramidParticles){
+      const dx = p.ox - p.x, dy = p.oy - p.y;
+      p.vx += dx * (exploded ? 0.008 : 0.04);
+      p.vy += dy * (exploded ? 0.008 : 0.04);
+      p.vz += (0 - p.vz) * 0.025;
+      const mx = p.x - mouse.x, my = p.y - mouse.y, md = Math.hypot(mx,my);
+      if(md < 180){
+        const f = (1 - md/180) * (mouse.down ? 3.0 : -3.0);
+        p.vx += (mx/md||0.001) * f;
+        p.vy += (my/md||0.001) * f;
+      }
+      p.vx *= 0.93; p.vy *= 0.93; p.vz *= 0.94;
+      p.x += p.vx * (dt*0.018);
+      p.y += p.vy * (dt*0.018);
+    }
+
+    // Grid particles physics
+    for(const g of particles){
+      const dx = g.bx - g.x, dy = g.by - g.y;
+      g.vx += dx * 0.025; g.vy += dy * 0.025;
+      const mdx = g.x - mouse.x, mdy = g.y - mouse.y, md = Math.hypot(mdx,mdy);
+      if(md < 140){
+        const m = (1 - md/140);
+        const sgn = mouse.down ? 1 : -1;
+        g.vx += sgn * (mdx/md||0.001) * m * 2.5;
+        g.vy += sgn * (mdy/md||0.001) * m * 2.5;
+      }
+      g.vx *= 0.91; g.vy *= 0.91;
+      g.x += g.vx * (dt*0.018); g.y += g.vy * (dt*0.018);
+    }
+
+    // Sand storm physics
+    for(const r of sandStorm){ 
+      r.y += r.vy; 
+      r.vy += 0.025; 
+      r.alpha *= 0.9985; 
+    }
+    while(sandStorm.length && sandStorm[0].y > innerHeight + 100) sandStorm.shift();
+
+    // Auto pyramid reformation
+    if(autoTimer > 8500){ autoTimer = 0; toggleExplode(); }
+
+    // Clear and render
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    const T = (now*0.0002) % 1;
+    
+    // Background gradient
+    const g = ctx.createLinearGradient(0,0,0,innerHeight);
+    g.addColorStop(0, 'rgba(10,11,15,0.0)');
+    g.addColorStop(1, 'rgba(0,0,0,0.7)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,innerWidth,innerHeight);
+
+    // Ripple effects
+    for(let i=ripples.length-1;i>=0;i--){
+      const R = ripples[i];
+      ctx.save(); 
+      ctx.globalAlpha = 0.4 * R.life; 
+      ctx.lineWidth = 2.5; 
+      ctx.strokeStyle = 'rgba(255,214,107,0.95)';
+      ctx.beginPath(); 
+      ctx.arc(R.x,R.y,R.r,0,Math.PI*2); 
+      ctx.stroke(); 
+      ctx.restore();
+      R.r += 4.2; R.life -= 0.022; 
+      if(R.life <= 0) ripples.splice(i,1);
+    }
+
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    
+    // Render grid particles
+    for(const g of particles){
+      ctx.globalAlpha = Math.max(0.08, Math.min(0.98, g.shade));
+      ctx.fillStyle = egyptianPalette((T + (g.x%250)/700) % 1);
+      ctx.font = '14px monospace';
+      ctx.fillText(g.ch, g.x, g.y);
+    }
+
+    // Render sand storm
+    ctx.globalAlpha = 1;
+    ctx.font = '20px serif';
+    for(const R of sandStorm){
+      ctx.globalAlpha = Math.max(0.08, Math.min(1, R.alpha));
+      ctx.fillStyle = 'rgba(255,214,107,0.98)';
+      ctx.fillText(R.ch, R.x, R.y);
+    }
+
+    // Render 3D pyramid
+    if(pyramidParticles.length){
+      if(exploded) pyramidAngle += 0.015; else pyramidAngle += 0.006;
+      const cx = innerWidth/2, cy = innerHeight*0.48;
+      for(const p of pyramidParticles){
+        const rx = p.ox * Math.cos(pyramidAngle*0.7) - p.oz * Math.sin(pyramidAngle*0.7);
+        const rz = p.ox * Math.sin(pyramidAngle*0.7) + p.oz * Math.cos(pyramidAngle*0.7);
+        const sx = cx + (rx) * 1.05 + p.x - p.ox;
+        const sy = cy + (p.oy) - rz*0.08 + p.y - p.oy;
+        const depth = 1 - (rz / 1800);
+        const alpha = Math.max(0.08, Math.min(1, (p.shade * depth)));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = egyptianPalette((T + (rz%350)/600) % 1);
+        ctx.font = '18px monospace';
+        ctx.fillText(p.ch, sx+1, sy+1);
+        ctx.globalAlpha = alpha;
+        ctx.fillText(p.ch, sx, sy);
+      }
+    }
+  }
+
+  fit();
+  requestAnimationFrame(tick);
+  window.PyramidsPortal = {
+    activatePortal: function(){
+      document.getElementById('services').classList.add('visible');
+      burst(CX, CY, 1.8);
+    },
+    rebuild: function(){ buildGrid(); buildPyramidParticles(); }
+  };
+  setTimeout(()=>{ burst(CX, CY, 1.2); }, 800);
+  setTimeout(()=>{ burst(CX-160, CY-100, 1.0); }, 1500);
+})();
+</script>
+
+<script>
+/* ========= UI interactions + booking system ========= */
+(function(){
+  const orb = document.getElementById('orb');
+  const services = document.getElementById('services');
+  const chatToggle = document.getElementById('chatToggle');
+  const chatWindow = document.getElementById('chatWindow');
+  const chatBody = document.getElementById('chatBody');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+
+  orb.addEventListener('click', ()=>{
+    services.classList.add('visible');
+    if(window.PyramidsPortal && typeof window.PyramidsPortal.activatePortal === 'function') {
+      window.PyramidsPortal.activatePortal();
+    }
+  });
+
+  document.querySelectorAll('[data-action="book"]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const card = e.target.closest('.service-card');
+      const service = card?.dataset?.service || 'general';
+      openChat();
+      appendUser(`Interested in ${service.replace('-', ' ')}`);
+      sendToAgent(`I want details about ${service.replace('-', ' ')}`);
+    });
+  });
+
+  chatToggle.addEventListener('click', ()=>{
+    if(chatWindow.style.display === 'flex'){ 
+      chatWindow.style.display = 'none'; 
+      chatWindow.setAttribute('aria-hidden','true'); 
+    } else { 
+      openChat(); 
+    }
+  });
+
+  function openChat(){ 
+    chatWindow.style.display = 'flex'; 
+    chatWindow.setAttribute('aria-hidden','false'); 
+    chatInput.focus(); 
+    appendAgent('Welcome to AlArab Club 777! I\'m your Egyptian tour assistant. Which adventure interests you: Pyramid tours, Camel safaris, Desert adventures, or our complete package?'); 
+  }
+
+  function appendAgent(txt){ 
+    const d=document.createElement('div'); 
+    d.className='msg agent'; 
+    d.textContent = txt; 
+    chatBody.appendChild(d); 
+    chatBody.scrollTop = chatBody.scrollHeight; 
+  }
+
+  function appendUser(txt){ 
+    const d=document.createElement('div'); 
+    d.className='msg user'; 
+    d.textContent = txt; 
+    chatBody.appendChild(d); 
+    chatBody.scrollTop = chatBody.scrollHeight; 
+  }
+
+  function detectIntent(text){
+    text = text.toLowerCase();
+    const intent = {service:null,tone:'professional'};
+    if(/pyramid|explore|archaeological|tomb|ancient/.test(text)) intent.service='pyramid-tour';
+    if(/camel|safari|desert|dune|bedouin/.test(text)) intent.service='camel-safari';
+    if(/horse|ride|riding|pharaoh/.test(text)) intent.service='horse-riding';
+    if(/complete|package|full|everything|ultimate/.test(text)) intent.service='complete-package';
+    if(/saqqara|step|archaeological/.test(text)) intent.service='saqqara';
+    if(/buggy|off.?road|adventure|thrill|speed/.test(text)) intent.service='buggy-adventure';
+    if(/sound|light|show|evening|night/.test(text)) intent.service='sound-light';
+    if(/transfer|airport|transport|car|pickup/.test(text)) intent.service='hotel-transfer';
+    if(/spiritual|magical|mystical|soul/.test(text)) intent.tone='spiritual';
+    if(/adventure|exciting|thrill|fun|awesome/.test(text)) intent.tone='adventurous';
+    return intent;
+  }
+
+  function generateReply(text){
+    const intent = detectIntent(text);
+    const services = {
+      'pyramid-tour': "🏛️ **Pyramid Explorer Tour** - Journey through the ancient Giza complex with expert guides. Discover hidden chambers, learn about pyramid construction, and explore the Sphinx. Full day experience including lunch and transfers. Price: $45-85 USD",
+      'camel-safari': "🐪 **Desert Camel Safari** - Experience the timeless journey across golden dunes. Choose sunrise (6 AM) or sunset (4 PM) rides with traditional Bedouin guides. Includes tea ceremony in the desert. Duration: 2-4 hours. Price: $25-50 USD",
+      'horse-riding': "🐎 **Royal Horse Adventure** - Ride like ancient pharaohs around the pyramid complex. Professional horses, safety equipment, and guides provided. Perfect for all skill levels. Duration: 1-3 hours. Price: $30-60 USD",
+      'complete-package': "👑 **Complete Egyptian Experience** - Ultimate adventure package including pyramid tours, camel safari, horse riding, traditional Egyptian lunch, and sunset viewing. Perfect for creating unforgettable memories. Full day + evening. Price: $120-250 USD",
+      'saqqara': "🏺 **Saqqara Archaeological Site** - Explore the ancient Saqqara complex featuring the famous Step Pyramid of Djoser. Discover 4,000 years of Egyptian history with expert archaeological guides. Half day tour. Price: $35-70 USD",
+      'buggy-adventure': "🏎️ **Desert Buggy Adventure** - High-speed desert exploration in modern off-road buggies. Navigate ancient dunes and paths with professional guides. All safety gear included. Duration: 2-3 hours. Price: $60-120 USD",
+      'sound-light': "🌙 **Sound & Light Show** - Spectacular evening show at the pyramids with narrated light projections telling ancient Egypt's story. Magical nighttime experience. Duration: 1.5 hours. Price: $25-45 USD",
+      'hotel-transfer': "🚗 **Airport & Hotel Transfers** - Comfortable transportation with professional drivers and luxury vehicles. Available 24/7 for all Cairo and Giza locations. Price: $15-40 USD per trip"
+    };
+
+    let intro = '';
+    if(intent.tone === 'spiritual') intro = "Connect with ancient wisdom and desert tranquility — ";
+    else if(intent.tone === 'adventurous') intro = "Get ready for an unforgettable Egyptian adventure — ";
+    else intro = "Discover authentic Egypt with AlArab Club 777 — ";
+
+    const serviceInfo = intent.service ? services[intent.service] : "We offer complete Egyptian experiences: pyramid tours, desert safaris, archaeological sites, and luxury transfers. Which adventure calls to you?";
+    
+    return intro + serviceInfo + " Type 'book' to reserve your spot or ask about specific details!";
+  }
+
+  async function sendToAgent(msg){
+    appendUser(msg);
+    appendAgent("Preparing your Egyptian adventure details...");
+    setTimeout(()=>{
+      if(chatBody.lastElementChild && chatBody.lastElementChild.textContent === 'Preparing your Egyptian adventure details...') {
+        chatBody.lastElementChild.remove();
+      }
+      const reply = generateReply(msg);
+      appendAgent(reply);
+    }, 700 + Math.random()*800);
+  }
+
+  chatSend.addEventListener('click', ()=>{ 
+    const v=chatInput.value.trim(); 
+    if(!v) return; 
+    chatInput.value=''; 
+    sendToAgent(v); 
+  });
+
+  chatInput.addEventListener('keydown', e=>{ 
+    if(e.key==='Enter'){ 
+      e.preventDefault(); 
+      chatSend.click(); 
+    } 
+  });
+
+})();
+</script>
+
+</body>
+</html>
+
+=============.    ==========
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>جولة الأهرامات – نزلة السمان | حجز فوري</title>
+  <meta name="description" content="جولات الأهرامات بنزلة السمان مع أهل المنطقة الأصليين: ركوب الجمل، الحصان، عربات الباجي/الـATV، جولة كاملة، تصوير، وضيافة بدوية. حجز فوري عبر واتساب + QR." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <!-- TODO: ضع رقم واتساب الدولي بدون + في المتغير DEFAULT_PHONE أدناه (مثال: 2010XXXXXXX) -->
+  <style>
+    :root{
+      --bg:#0b0e13;          /* الخلفية الأساسية */
+      --card:#121621;        /* خلفية الكروت */
+      --muted:#9aa3b2;       /* نص خافت */
+      --text:#e6edf3;        /* نص أساسي */
+      --brand:#0ea5e9;       /* الوضع الأزرق (روحاني) */
+      --brand-2:#ef4444;     /* الوضع الأحمر (مغامرة) */
+      --brand-active: var(--brand);
+      --glass: rgba(255,255,255,.06);
+      --glass-2: rgba(255,255,255,.12);
+      --ring: rgba(14,165,233,.5);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic UI", "Noto Sans Arabic", Cairo, Tahoma, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(14,165,233,.15), transparent 60%),
+                  radial-gradient(900px 600px at 10% 100%, rgba(239,68,68,.12), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    .wrap{min-height:100dvh; display:flex; flex-direction:column}
+    header{
+      position:sticky; top:0; backdrop-filter:saturate(140%) blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.2));
+      border-bottom:1px solid var(--glass-2);
+      z-index:20;
+    }
+    .container{width:min(1200px, 92vw); margin-inline:auto; padding:14px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, var(--brand-active), #22d3ee); box-shadow:0 0 0 3px var(--glass); display:grid; place-items:center}
+    .logo svg{filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+    .title{font-size: clamp(18px, 3.8vw, 28px); font-weight:800; letter-spacing:.3px}
+    .muted{color:var(--muted)}
+
+    .hero{position:relative; padding: clamp(14px, 3.5vw, 28px) 0 6px}
+    .grid{display:grid; gap:16px}
+    @media (min-width:900px){
+      .grid{grid-template-columns: 1.2fr .8fr}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--glass-2);
+      border-radius:22px; padding:18px; box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .headline{font-size:clamp(22px, 2.8vw, 34px); margin:0 0 6px; line-height:1.25}
+    .sub{margin:0 0 12px; color:var(--muted)}
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px}
+    .chip{padding:8px 12px; border-radius:999px; border:1px solid var(--glass-2); background:rgba(255,255,255,.03); font-size:14px}
+
+    .mode{display:flex; gap:10px; align-items:center; margin:12px 0}
+    .toggle{position:relative; width:220px; height:42px; background:var(--card); border:1px solid var(--glass-2); border-radius:999px; padding:6px; display:flex; gap:6px}
+    .toggle button{flex:1; border:0; background:transparent; color:var(--muted); font-weight:700; cursor:pointer; border-radius:999px}
+    .toggle button.active{color:#fff}
+    .knob{position:absolute; top:6px; bottom:6px; width:calc(50% - 6px); border-radius:999px; background: linear-gradient(135deg, var(--brand-active), #60a5fa); box-shadow:0 10px 30px var(--ring); transition: transform .35s ease}
+
+    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid var(--glass-2); cursor:pointer; text-decoration:none; font-weight:800; letter-spacing:.2px}
+    .btn.primary{background: linear-gradient(135deg, var(--brand-active), #1f2937); color:#fff}
+    .btn.ghost{background:rgba(255,255,255,.05); color:#fff}
+
+    .video{position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--glass-2)}
+    .video::after{content:""; position:absolute; inset:0; box-shadow: inset 0 0 80px rgba(0,0,0,.35); pointer-events:none}
+    video{display:block; width:100%; height:auto; background:#000}
+
+    .offers{display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top:14px}
+    .offer{position:relative; padding:16px; border-radius:18px; border:1px solid var(--glass-2); background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))}
+    .offer h3{margin:0 0 6px}
+    .price{font-size:18px; font-weight:900}
+    .small{font-size:12px; color:var(--muted)}
+    .offer .book{margin-top:12px}
+
+    .footer{display:grid; gap:10px; align-items:center; grid-template-columns: 1fr; margin-top:16px}
+    @media (min-width:800px){.footer{grid-template-columns: 1fr auto auto}}
+
+    .qr{background:rgba(255,255,255,.02); border:1px solid var(--glass-2); border-radius:14px; padding:10px; display:grid; place-items:center}
+    canvas{image-rendering: pixelated}
+
+    /* مؤثر بسيط مع حركة الماوس */
+    .stars{position:fixed; inset:0; pointer-events:none; z-index:0}
+    .stars span{position:absolute; width:2px; height:2px; background:var(--brand-active); opacity:.6; border-radius:50%; filter: drop-shadow(0 0 4px var(--ring))}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="container" style="display:flex; justify-content:space-between; gap:12px; align-items:center">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3L4 9l8 12 8-12-8-6z" fill="white" fill-opacity=".95"/>
+            </svg>
+          </div>
+          <div>
+            <div class="title">جولة الأهرامات – نزلة السمان</div>
+            <div class="muted" style="font-size:12px">مع أهل الأرض الأصليين | حجز فوري عبر واتساب</div>
+          </div>
+        </div>
+        <a id="waTop" class="btn primary" href="#">احجز الآن</a>
+      </div>
+    </header>
+
+    <main class="container hero">
+      <div class="grid">
+        <section class="card" style="position:relative; z-index:1">
+          <h1 class="headline">تجربة أصيلة مع جيران خوفو وخفرع</h1>
+          <p class="sub">ركوب الجمل أو الحصان، عربات باجي/ATV، أو جولة كاملة مع ضيافة بدوية وتصوير — كل ده مع مرشد محلي مولود تحت الأهرامات.</p>
+
+          <div class="chips">
+            <div class="chip">📍 نزلة السمان – الجيزة</div>
+            <div class="chip">⏱️ 60–120 دقيقة</div>
+            <div class="chip">🎥 فيديو/صور HD أثناء الجولة</div>
+            <div class="chip">🫖 شاي بدوي</div>
+          </div>
+
+          <div class="mode">
+            <span class="muted">اختر روح الجولة:</span>
+            <div class="toggle" aria-label="اختر وضع الجولة">
+              <div class="knob" id="knob"></div>
+              <button id="modeBlue" class="active" type="button">روحانية 🔵</button>
+              <button id="modeRed" type="button">مغامرة 🔴</button>
+            </div>
+          </div>
+
+          <div class="cta">
+            <a class="btn primary" id="bookPrimary" href="#">احجز الآن عبر واتساب</a>
+            <a class="btn ghost" id="chatAI" href="#">تحدث مع AI المضيف</a>
+          </div>
+
+          <div class="offers">
+            <article class="offer">
+              <h3>🐪 ركوب الجمل</h3>
+              <div class="price">يبدأ من <strong>$20</strong> للشخص <span class="small">(سعر تقريبي)</span></div>
+              <div class="small">أفضل للمناظر الكلاسيكية عند الشروق/الغروب.</div>
+              <div class="cta book"><a class="btn primary" data-offer="Camel" href="#">احجز ركوب الجمل</a></div>
+            </article>
+            <article class="offer">
+              <h3>🐎 ركوب الحصان</h3>
+              <div class="price">يبدأ من <strong>$25</strong> للشخص <span class="small">(تقريبي)</span></div>
+              <div class="small">إيقاع أسرع ولمحترفي الصور الحركة.</div>
+              <div class="cta book"><a class="btn primary" data-offer="Horse" href="#">احجز ركوب الحصان</a></div>
+            </article>
+            <article class="offer">
+              <h3>🚙 باجي / ATV</h3>
+              <div class="price">30 دقيقة <strong>$20</strong> • 60 دقيقة <strong>$35</strong> <span class="small">(تقريبي)</span></div>
+              <div class="small">اندفاع أدرينالين في قلب الصحراء.</div>
+              <div class="cta book"><a class="btn primary" data-offer="ATV" href="#">احجز باجي/ATV</a></div>
+            </article>
+            <article class="offer">
+              <h3>🌞 الجولة الكاملة</h3>
+              <div class="price">يبدأ من <strong>$45</strong> للشخص <span class="small">(تقريبي)</span></div>
+              <div class="small">جمل/حصان + ضيافة + نقاط تصوير + مرشد محلي.</div>
+              <div class="cta book"><a class="btn primary" data-offer="Full Tour" href="#">احجز الجولة الكاملة</a></div>
+            </article>
+          </div>
+
+          <p class="small" style="margin-top:8px">* الأسعار تقريبية حسب الموسم والمدة وعدد الأفراد. تشمل الخدمة مساعدة الحجز ورسالة تأكيد.
+            <br/>تذاكر الدخول للمنطقة الأثرية تُدفع رسميًا عند البوابة.</p>
+        </section>
+
+        <aside class="card">
+          <div class="video">
+            <!-- TODO: أرفق ملف الفيديو القصير (30–60 ثانية) الخاص بك -->
+            <video controls preload="metadata" poster="" id="promoVideo">
+              <source src="" type="video/mp4" />
+              متصفحك لا يدعم الفيديو.
+            </video>
+          </div>
+          <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:12px">
+            <div>
+              <div style="font-weight:800">احجز عبر QR</div>
+              <div class="small">امسح الكود لفتح واتساب مع رسالة جاهزة.</div>
+            </div>
+            <div class="qr"><div id="qrcode"></div></div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="card" style="margin-top:14px">
+        <h2 style="margin:0 0 8px">معلومات سريعة</h2>
+        <ul class="small" style="line-height:1.9; margin:0; padding-right:18px">
+          <li>الدفع: نقدًا أو بطاقة لبعض الخدمات. تذاكر هضبة الجيزة الرسمية حاليًا حوالي 700 جنيه للبالغ (قد تتغير).</li>
+          <li>أفضل وقت: شروق أو غروب — حرارة أقل وصور أجمل.</li>
+          <li>التوصيل من/إلى الفندق متاح حسب الطلب. خدمة المطار ⇄ الأهرامات تُضاف لاحقًا.</li>
+          <li>الملابس: أحذية مريحة، قبعة، مياه.</li>
+        </ul>
+      </section>
+
+      <footer style="margin:14px 0 28px">
+        <div class="footer">
+          <div class="small">© نزلة السمان – تجربة أصلية مع أهل المكان. صُمِّم بجماليات حديثة ويعمل كأنه تطبيق.
+          </div>
+          <a class="btn ghost" id="copyLink" href="#">نسخ رابط الحجز</a>
+          <a class="btn primary" id="shareBtn" href="#">مشاركة</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- نجوم تفاعلية بسيطة -->
+  <div class="stars" id="stars"></div>
+
+  <!-- QRCode.js (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // === الإعدادات العامة ===
+    const DEFAULT_PHONE = "201234567890"; // ضع رقمك الدولي بدون +
+
+    // وضع الجولة: روحانية (أزرق) / مغامرة (أحمر)
+    const root = document.documentElement;
+    const knob = document.getElementById('knob');
+    const btnBlue = document.getElementById('modeBlue');
+    const btnRed = document.getElementById('modeRed');
+
+    function setMode(mode){
+      if(mode === 'blue'){
+        root.style.setProperty('--brand-active', getComputedStyle(root).getPropertyValue('--brand'));
+        btnBlue.classList.add('active'); btnRed.classList.remove('active');
+        knob.style.transform = 'translateX(0)';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content','#0ea5e9');
+      } else {
+        root.style.setProperty('--brand-active', getComputedStyle(root).getPropertyValue('--brand-2'));
+        btnRed.classList.add('active'); btnBlue.classList.remove('active');
+        knob.style.transform = 'translateX(100%)';
+        document.querySelector('meta[name="theme-color"]').setAttribute('content','#ef4444');
+      }
+      // تحديث QR برابط الوضع الحالي
+      updateQR();
+    }
+
+    btnBlue.addEventListener('click', ()=> setMode('blue'));
+    btnRed .addEventListener('click', ()=> setMode('red'));
+
+    // === توليد رابط واتساب مُعبّأ ===
+    function buildWA({offer="General", modeLabel, phone=DEFAULT_PHONE}){
+      const text = encodeURIComponent(
+        `مرحبًا، أود الحجز لجولة الأهرامات – نزلة السمان.\nالاختيار: ${offer}.\nروح الجولة: ${modeLabel}.\nالاسم: ____\nالتاريخ: ____\nعدد الأشخاص: ____\nاستفسارات إضافية: ____`
+      );
+      return `https://wa.me/${phone}?text=${text}`;
+    }
+
+    function currentModeLabel(){
+      return btnBlue.classList.contains('active') ? 'روحانية (الأزرق)' : 'مغامرة (الأحمر)';
+    }
+
+    const waTop = document.getElementById('waTop');
+    const bookPrimary = document.getElementById('bookPrimary');
+    const chatAI = document.getElementById('chatAI');
+
+    function updateLinks(){
+      const url = buildWA({offer:'استفسار عام', modeLabel: currentModeLabel()});
+      waTop.href = url;
+      bookPrimary.href = url;
+      chatAI.href = url; // يمكن لاحقًا ربطه بمساعد AI فعلي عبر واتساب بزنس
+    }
+
+    // أزرار الحجز لكل عرض
+    document.querySelectorAll('[data-offer]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const offer = e.currentTarget.dataset.offer;
+        const url = buildWA({offer, modeLabel: currentModeLabel()});
+        window.open(url, '_blank');
+      })
+    })
+
+    // === QR ===
+    let qr;
+    function updateQR(){
+      const url = buildWA({offer:'QR Booking', modeLabel: currentModeLabel()});
+      const qrBox = document.getElementById('qrcode');
+      qrBox.innerHTML = '';
+      qr = new QRCode(qrBox, {text:url, width:130, height:130, correctLevel: QRCode.CorrectLevel.M});
+    }
+
+    // نسخ رابط
+    document.getElementById('copyLink').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const url = buildWA({offer:'استفسار عام', modeLabel: currentModeLabel()});
+      navigator.clipboard.writeText(url).then(()=>{
+        e.currentTarget.textContent = 'تم النسخ ✅';
+        setTimeout(()=> e.currentTarget.textContent='نسخ رابط الحجز', 1800);
+      });
+    });
+
+    // مشاركة النظامية
+    document.getElementById('shareBtn').addEventListener('click', async (e)=>{
+      e.preventDefault();
+      const url = buildWA({offer:'استفسار عام', modeLabel: currentModeLabel()});
+      if(navigator.share){
+        await navigator.share({title: 'جولة الأهرامات – نزلة السمان', text:'حجز واتساب فوري', url});
+      } else {
+        window.open(url, '_blank');
+      }
+    });
+
+    // مؤثر نجوم بسيط يتبع الماوس
+    const stars = document.getElementById('stars');
+    const pool = Array.from({length: 30}).map(()=>{
+      const s = document.createElement('span');
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.top = Math.random()*100 + 'vh';
+      s.style.opacity = Math.random()*0.5 + 0.2;
+      stars.appendChild(s); return s;
+    });
+    window.addEventListener('mousemove', (e)=>{
+      const x = e.clientX, y = e.clientY;
+      pool.forEach((s,i)=>{
+        const d = (i%5)+1; // درجات مختلفة
+        s.style.transform = `translate(${(x/window.innerWidth - .5)*d*8}px, ${(y/window.innerHeight - .5)*d*8}px)`;
+      })
+    });
+
+    // تهيئة ابتدائية
+    setMode('blue');
+    updateLinks();
+    updateQR();
+  </script>
+</body>
+</html>
+============================
+
+
+‏يا بيبي واضح من اللي بعثت لك إياهم أنهم أربع أو ثلاث أقسام دول تمام قسم الأخير هو في الهرم
+‏بعد ذلك الآن سوف أرسل الطوبة
+ال ‏طابا
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>⟁AlArab⟁777 — Vision Gate (Hardened)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--gold:#ffd97a}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0810,#000);font-family:monospace;color:#fff;-webkit-font-smoothing:antialiased}
+    canvas{position:fixed;inset:0;z-index:0}
+    .matrix-background{position:fixed;inset:0;background:#000;z-index:-2}
+    .glyphs{position:fixed;inset:0;pointer-events:none;z-index:-1;color:rgba(255,255,255,0.06);font-family:monospace}
+
+    .circle{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;border-radius:50%;background:radial-gradient(circle, rgba(255,215,120,0.06), transparent 75%);z-index:6;pointer-events:none;transition:transform .18s ease-out, opacity .25s}
+    .cube{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:140px;height:140px;z-index:8;pointer-events:none;display:flex;align-items:center;justify-content:center}
+    .cube-inner{width:120px;height:120px;border-radius:14px;background:linear-gradient(180deg,rgba(255,215,120,0.06),rgba(255,180,70,0.02));display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,200,80,0.06);box-shadow:0 10px 30px rgba(0,0,0,0.6);transition:transform .18s cubic-bezier(.2,.8,.2,1)}
+    .center-eye{font-size:46px;color:var(--gold);text-shadow:0 0 6px rgba(255,210,80,.9);pointer-events:none;transition:transform .2s ease-out, text-shadow .25s}
+
+    .ui{position:fixed;left:12px;top:12px;z-index:9999;display:flex;gap:8px}
+    .ui button{background:rgba(255,255,255,0.04);border:0;color:var(--gold);padding:8px 10px;border-radius:8px;cursor:pointer}
+    .info{position:fixed;right:12px;top:12px;z-index:9999;color:#cbbfa8;background:rgba(0,0,0,0.45);padding:8px;border-radius:8px}
+
+    /* debug panel */
+    #debug{position:fixed;right:12px;bottom:12px;z-index:10000;max-width:340px;max-height:280px;overflow:auto;background:rgba(0,0,0,0.6);padding:8px;border-radius:10px;border:1px solid rgba(255,215,0,0.06);font-size:12px;color:#ffd}
+    #debug .line{padding:6px;border-bottom:1px dashed rgba(255,255,255,0.02)}
+
+    .trail{position:fixed;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#ffd97a,#ffb347);pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:screen;z-index:9998}
+    .ripple{position:fixed;border-radius:50%;pointer-events:none;border:1px solid rgba(255,215,0,0.12);box-shadow:0 0 20px rgba(255,180,60,0.08);z-index:9997;transform:translate(-50%,-50%)}
+
+    @media (max-width:700px){ .center-eye{font-size:36px} }
+  </style>
+
+  <!-- EARLY: Global error handlers + safe ethereum stub (run as early as possible) -->
+  <script>
+    (function(){
+      // lightweight pending log buffer before DOM ready
+      window.__pendingLogs = [];
+      window.__appendLog = function(msg, level){ try{ if(document && document.getElementById('debug')){ const d = document.getElementById('debug'); const el = document.createElement('div'); el.className = 'line'; el.innerText = (new Date()).toLocaleTimeString() + ' • ' + (level||'info') + ' — ' + msg; d.prepend(el); while(d.children.length>80) d.removeChild(d.lastChild); } else { window.__pendingLogs.push([msg,level]); } }catch(e){ try{ console.log('log',msg); }catch(_){} } };
+
+      // global error interception
+      window.addEventListener('error', function(ev){ try{
+        const m = (ev && ev.message) || (ev && ev.error && ev.error.message) || String(ev);
+        window.__appendLog('window.onerror: ' + m, 'error');
+        // swallow known metamask/connect noise so UI won't break
+        const low = String(m).toLowerCase();
+        if(low.includes('metamask') || low.includes('failed to connect')){
+          window.__appendLog('Intercepted MetaMask-related error and prevented default.', 'warn');
+          ev.preventDefault && ev.preventDefault();
+        }
+      }catch(e){}
+      }, true);
+
+      window.addEventListener('unhandledrejection', function(ev){ try{
+        const reason = ev && ev.reason ? (ev.reason.message || String(ev.reason)) : String(ev);
+        window.__appendLog('unhandledrejection: ' + reason, 'error');
+        if(String(reason).toLowerCase().includes('metamask') || String(reason).toLowerCase().includes('failed to connect')){
+          window.__appendLog('Intercepted MetaMask unhandled rejection and prevented default.', 'warn');
+          ev.preventDefault && ev.preventDefault();
+        }
+      }catch(e){}
+      }, true);
+
+      // Install robust ethereum stub/wrapper
+      try{
+        function makeStub(){
+          const events = {};
+          return {
+            isMetaMask: false,
+            request: async function(payload){ try{ const method = payload && payload.method ? payload.method : payload; window.__appendLog('ethereum.request stub called: '+JSON.stringify(method)); if(method === 'eth_requestAccounts') return []; return null; }catch(e){ return null; } },
+            enable: async function(){ window.__appendLog('ethereum.enable() called on stub'); return []; },
+            on: function(ev, h){ events[ev] = events[ev] || []; events[ev].push(h); },
+            removeListener: function(ev, h){ if(events[ev]) events[ev] = events[ev].filter(x=>x!==h); },
+            send: function(){ return null; },
+            sendAsync: function(payload, cb){ if(cb) cb(null, {result:null}); }
+          };
+        }
+        if(!window.ethereum){
+          window.ethereum = makeStub();
+          window.__appendLog('Installed ethereum safe stub', 'warn');
+        } else {
+          // wrap request & enable to prevent crashes
+          try{
+            const eth = window.ethereum;
+            if(!eth.__wrapped){
+              const origReq = eth.request && eth.request.bind(eth);
+              if(origReq){ eth.request = async function(args){ try{ return await origReq(args); }catch(err){ window.__appendLog('Wrapped ethereum.request caught error: '+(err&&err.message), 'warn'); if(args && args.method === 'eth_requestAccounts') return []; return []; } }; }
+              if(!eth.enable){ eth.enable = async ()=>{ try{ return origReq ? await origReq({method:'eth_requestAccounts'}) : []; }catch(e){ return []; } } }
+              if(!eth.sendAsync){ eth.sendAsync = function(payload, cb){ try{ if(eth.send) return cb(null, {result: eth.send(payload)}); cb(null,{result:null}); }catch(e){ cb(e); } } }
+              eth.__wrapped = true;
+              window.__appendLog('Wrapped existing ethereum object to be safe', 'info');
+            }
+          }catch(e){ window.__appendLog('Error wrapping ethereum: '+(e&&e.message), 'error'); }
+        }
+      }catch(e){ window.__appendLog('ethereum stub install failed: '+(e&&e.message), 'error'); }
+
+    })();
+  </script>
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="matrix-background"></div>
+  <div class="glyphs" id="glyphs"></div>
+
+  <!-- Visual elements (kept above the canvas) -->
+  <div class="circle" id="circleEl" aria-hidden="true"></div>
+  <div class="cube" id="cubeEl" aria-hidden="true">
+    <div class="cube-inner" id="cubeInner">
+      <div class="center-eye" id="centerEye">𓁹</div>
+    </div>
+  </div>
+  <div id="eye" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font-size:160px;color:rgba(255,255,255,0.06);pointer-events:none;z-index:-1">𓂀</div>
+
+  <!-- Controls -->
+  <div class="ui">
+    <button id="simulateErr">Simulate MetaMask Err</button>
+    <button id="testConnect">Test MetaMask Connect</button>
+    <button id="explodeBtn">Force Explode</button>
+    <button id="regenBtn">Rebuild Particles</button>
+    <button id="modeBtn">وضع: تفاعل</button>
+    <button id="micBtn">Mic: off</button>
+  </div>
+  <div class="info">المس الشاشة — اسحب — قرّب بـ إبهامين — اضغط مطوّل لتفعيل الختم</div>
+
+  <!-- Debug panel -->
+  <div id="debug"></div>
+
+  <script>
+    // When DOM ready, flush pending logs (from head) into debug panel
+    document.addEventListener('DOMContentLoaded', function(){ try{
+      const dbg = document.getElementById('debug'); if(window.__pendingLogs && window.__pendingLogs.length){ for(const it of window.__pendingLogs){ const el=document.createElement('div'); el.className='line'; el.innerText = (new Date()).toLocaleTimeString() + ' • ' + (it[1]||'') + ' — ' + it[0]; dbg.prepend(el); } window.__pendingLogs=[]; }
+      // Provide a nicer helper API
+      window.__appendLog = function(msg, level){ try{ const el=document.createElement('div'); el.className='line'; el.innerText = (new Date()).toLocaleTimeString() + ' • ' + (level||'info') + ' — ' + msg; dbg.prepend(el); while(dbg.children.length>80) dbg.removeChild(dbg.lastChild); }catch(e){ console.log(msg); } };
+      window.__appendLog('Debug panel ready', 'info');
+    }catch(e){}
+    });
+
+    /* ---------- MAIN: interactive blackhole with robust guards ---------- */
+    (function(){
+      try{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        if(!ctx){ window.__appendLog('Canvas context not available', 'error'); return; }
+
+        // UI elements
+        const circleEl = document.getElementById('circleEl');
+        const cubeEl = document.getElementById('cubeEl');
+        const cubeInner = document.getElementById('cubeInner');
+        const centerEye = document.getElementById('centerEye');
+
+        // state
+        let W = window.innerWidth, H = window.innerHeight; let cx = W/2, cy = H/2; let radius = 150;
+        const glyphChars = ['.', '·', ':', '7', '•', '*', '𓂀', '𓆣', 'ا','ل','ع','ر','ب'];
+        let spacing = 7, fontSize = 12; let particles = [];
+        const pointers = new Map();
+        let isExploded=false; let nextCycle = Date.now()+((Math.floor(Math.random()*30)+7)*1000);
+        let audioCtx=null, analyser=null, micStream=null, micEnabled=false;
+        let gravity={x:0,y:0.12};
+        let mode='interactive';
+
+        // helpers
+        function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+        function getRandomDelay(){ return (Math.floor(Math.random()*30)+7) * 1000; }
+
+        function resize(){ W=window.innerWidth; H=window.innerHeight; canvas.width=W; canvas.height=H; cx=W/2; cy=H/2; buildParticles(); }
+        window.addEventListener('resize', resize); resize();
+
+        function buildParticles(){ particles=[]; const off=document.createElement('canvas'); off.width=W; off.height=H; const offCtx = off.getContext('2d'); offCtx.clearRect(0,0,W,H); offCtx.fillStyle='white'; offCtx.beginPath(); offCtx.arc(cx,cy,radius,0,Math.PI*2); offCtx.fill();
+          try{ const imageData = offCtx.getImageData(0,0,W,H); for(let y=0;y<H;y+=spacing){ for(let x=0;x<W;x+=spacing){ const i=(y*W+x)*4; if(i < imageData.data.length && imageData.data[i+3] > 128){ particles.push({ x, y, baseX:x, baseY:y, char: glyphChars[Math.floor(Math.random()*glyphChars.length)], vx:0, vy:0, mass:1+Math.random()*0.6, grabbed:false }); } } } window.__appendLog('Particles built: '+particles.length, 'info'); } catch(e){ window.__appendLog('buildParticles fallback: '+(e&&e.message), 'warn'); for(let y=cy-radius;y<cy+radius;y+=spacing*2){ for(let x=cx-radius;x<cx+radius;x+=spacing*2){ particles.push({ x,y,baseX:x,baseY:y,char:glyphChars[Math.floor(Math.random()*glyphChars.length)],vx:0,vy:0,mass:1 }); } } }
+        }
+
+        // comet
+        let comet = { x:-300, y:0, vx:1.5, vy:0.3, active:false, timer: 1500 + Math.random()*3000 };
+        function triggerComet(){ comet.active=true; comet.x=-200; comet.y=Math.random()*H*0.5; comet.vx=3+Math.random()*1.5; comet.vy=0.2+Math.random()*0.6; window.__appendLog('Comet triggered', 'info'); }
+        function updateComet(){ if(!comet.active){ comet.timer -= 16; if(comet.timer <= 0) triggerComet(); } else { comet.x += comet.vx; comet.y += comet.vy; if(comet.x > W + 200){ comet.active = false; comet.timer = 4000 + Math.random()*4000; } } }
+        function drawComet(){ if(!comet.active) return; const L=120; const g = ctx.createLinearGradient(comet.x, comet.y, comet.x-comet.vx*L, comet.y-comet.vy*L); g.addColorStop(0,'rgba(255,230,160,1)'); g.addColorStop(1,'rgba(255,230,160,0)'); ctx.beginPath(); ctx.moveTo(comet.x,comet.y); ctx.lineTo(comet.x-comet.vx*L, comet.y-comet.vy*L); ctx.strokeStyle=g; ctx.lineWidth=2.5; ctx.stroke(); ctx.beginPath(); ctx.fillStyle='rgba(255,240,200,1)'; ctx.arc(comet.x,comet.y,4,0,Math.PI*2); ctx.fill(); }
+
+        // animate
+        function animate(){ ctx.clearRect(0,0,W,H); updateComet(); drawComet(); if(Date.now() > nextCycle){ if(!isExploded) explodeParticles(); else regroupParticles(); nextCycle = Date.now() + getRandomDelay(); }
+
+          // audio influence
+          let audioFactor = 1;
+          if(analyser && micEnabled){ const data = new Uint8Array(analyser.frequencyBinCount); analyser.getByteTimeDomainData(data); let sum = 0; for(let i=0;i<data.length;i++){ const v=(data[i]-128)/128; sum += v*v; } const rms = Math.sqrt(sum/data.length); audioFactor = 1 + Math.min(3, rms*8); }
+
+          ctx.textBaseline='middle'; ctx.textAlign='center'; ctx.font = fontSize + 'px monospace';
+
+          // compute pointer average for visuals
+          let avgX = cx, avgY = cy, count=0; for(const v of pointers.values()){ avgX += v.x; avgY += v.y; count++; } if(count>0){ avgX /= (count+0); avgY /= (count+0); }
+
+          // update visual elements (circle, cubeInner, centerEye)
+          try{
+            const dx = avgX - cx, dy = avgY - cy; const dist = Math.hypot(dx,dy); const rx = clamp(-dy/8, -25,25); const ry = clamp(dx/8, -25,25); const scale = clamp(1 + (dist / Math.max(W,H))*0.6, 1, 1.5);
+            if(pointers.size>0){ cubeInner.style.transform = `translate(-50%,-50%) rotateX(${rx}deg) rotateY(${ry}deg) scale(${1})`; circleEl.style.transform = `translate(-50%,-50%) scale(${1 + (dist/Math.max(W,H))*0.22})`; centerEye.style.transform = `translate(-50%,-50%) scale(${1 + (dist/Math.max(W,H))*0.08})`; }
+            else { cubeInner.style.transform = `translate(-50%,-50%) rotateX(0deg) rotateY(0deg) scale(1)`; circleEl.style.transform = `translate(-50%,-50%) scale(1)`; centerEye.style.transform = `translate(-50%,-50%) scale(1)`; }
+          }catch(e){}
+
+          for(const p of particles){ if(p.grabbed){ // follow grab avg
+              let gx=0,gy=0,cnt=0; for(const v of pointers.values()){ gx+=v.x; gy+=v.y; cnt++; } if(cnt){ gx/=cnt; gy/=cnt; p.x += (gx - p.x) * 0.32; p.y += (gy - p.y) * 0.32; p.vx = 0; p.vy = 0; }
+            } else if(isExploded){ p.x += p.vx * audioFactor; p.y += p.vy * audioFactor; p.vx *= 0.985; p.vy *= 0.985; p.vy += gravity.y * p.mass; p.vx += gravity.x * p.mass; }
+            else { p.x -= (p.x - p.baseX) * 0.06; p.y -= (p.y - p.baseY) * 0.06; p.vy += gravity.y * 0.02; p.vx += gravity.x * 0.02; p.x += p.vx; p.y += p.vy; p.vx*=0.97; p.vy*=0.97; }
+
+            // pointer influence
+            if(pointers.size>0 && !p.grabbed){ let gx=0,gy=0,c=0; for(const v of pointers.values()){ gx+=v.x; gy+=v.y; c++; } if(c){ gx/=c; gy/=c; const dx=gx-p.x, dy=gy-p.y; const dist=Math.hypot(dx,dy)||0.0001; const force = Math.max(0, radius - dist)/radius; p.x -= (p.x - p.baseX - (dx/dist)*force*10) * 0.12; p.y -= (p.y - p.baseY - (dy/dist)*force*10) * 0.12; } }
+
+            // bounds
+            if(p.x < -200 || p.x > W+200 || p.y < -200 || p.y > H+200){ p.x = p.baseX; p.y = p.baseY; p.vx = 0; p.vy = 0; }
+
+            const flick = Math.max(0.04, Math.sin(Date.now()*0.005 + p.x*0.01)*0.35 + 0.65);
+            ctx.fillStyle = `rgba(255,215,0,${flick})`;
+            ctx.fillText(p.char, p.x, p.y);
+          }
+
+          requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+
+        // Pointer handling (unified)
+        const trails = new Map(); const grabs = new Map();
+        function createTrail(id,x,y){ try{ const el = document.createElement('div'); el.className='trail'; el.style.left = x+'px'; el.style.top = y+'px'; el.dataset.tid = id; document.body.appendChild(el); trails.set(id,el); }catch(e){} }
+        function moveTrail(id,x,y){ const el = trails.get(id); if(el){ el.style.left = x+'px'; el.style.top = y+'px'; } }
+        function removeTrail(id){ const el = trails.get(id); if(el){ el.style.transition = 'opacity .36s'; el.style.opacity = 0; setTimeout(()=>el.remove(),420); trails.delete(id); } }
+
+        function tryGrabNearby(x,y,id){ const grabRadius = 48; const grabbed = []; for(const p of particles){ const d = Math.hypot(p.x - x, p.y - y); if(d < grabRadius){ p.grabbed = true; grabbed.push(p); } } if(grabbed.length) grabs.set(id, grabbed); }
+        function updateGrab(id,x,y){ const g = grabs.get(id); if(!g) return; for(const p of g){ p.x += (x - p.x) * 0.25; p.y += (y - p.y) * 0.25; p.vx = 0; p.vy = 0; } }
+        function releaseGrabs(id,x,y,speed){ const g = grabs.get(id); if(!g) return; for(const p of g){ p.grabbed = false; p.vx += (p.x - x) * 0.02 + (Math.random()-0.5)*1.2; p.vy += (p.y - y) * 0.02 + (Math.random()-0.5)*1.2; } grabs.delete(id); }
+
+        function onPointerDown(e){ try{ const id = e.pointerId || 'm'; pointers.set(id, { x:e.clientX, y:e.clientY, downAt: Date.now(), startX:e.clientX, startY:e.clientY }); createTrail(id, e.clientX, e.clientY); const lp = setTimeout(()=>{ activateBatSeal(e.clientX, e.clientY); playChime(660,0.12); navigator.vibrate&&navigator.vibrate(40); }, 650); pointers.get(id).longpress = lp; tryGrabNearby(e.clientX, e.clientY, id); }catch(e){ window.__appendLog('onPointerDown error: '+(e&&e.message),'error'); } }
+        function onPointerMove(e){ try{ const id = e.pointerId || 'm'; if(pointers.has(id)){ const pt = pointers.get(id); pt.x = e.clientX; pt.y = e.clientY; moveTrail(id,e.clientX,e.clientY); updateGrab(id,e.clientX,e.clientY); } }catch(e){ window.__appendLog('onPointerMove error: '+(e&&e.message),'error'); } }
+        function onPointerUp(e){ try{ const id = e.pointerId || 'm'; const pt = pointers.get(id); if(pt){ clearTimeout(pt.longpress); removeTrail(id); const dt = Date.now() - pt.downAt; const dx = e.clientX - pt.startX, dy = e.clientY - pt.startY; if(dt < 300 && Math.hypot(dx,dy) < 10){ handleTap(e.clientX, e.clientY); } releaseGrabs(id, e.clientX, e.clientY, (dx)/Math.max(1,dt)); } pointers.delete(id); }catch(e){ window.__appendLog('onPointerUp error: '+(e&&e.message),'error'); } }
+
+        window.addEventListener('pointerdown', onPointerDown); window.addEventListener('pointermove', onPointerMove); window.addEventListener('pointerup', onPointerUp); window.addEventListener('pointercancel', onPointerUp);
+
+        // Ripple + glyph burst + visual reactions
+        function createRipple(x,y,strength=1){ try{ const el = document.createElement('div'); el.className = 'ripple'; const size = 80 * strength; el.style.width = size + 'px'; el.style.height = size + 'px'; el.style.left = x + 'px'; el.style.top = y + 'px'; document.body.appendChild(el); requestAnimationFrame(()=>{ el.style.transition = 'transform 800ms cubic-bezier(.2,.8,.2,1), opacity 900ms'; el.style.transform = 'translate(-50%,-50%) scale(3)'; el.style.opacity = '0'; }); setTimeout(()=>el.remove(),1000); for(const p of particles){ const dx = p.x - x, dy = p.y - y, d = Math.hypot(dx,dy); if(d < radius*2){ const f = (1 - (d/(radius*2))) * (6*strength); p.vx += (dx/d) * f; p.vy += (dy/d) * f; } } // visual: quick eye flash
+          centerEye.style.transform = 'translate(-50%,-50%) scale(1.18)'; centerEye.style.textShadow = '0 0 14px rgba(255,230,140,1)'; setTimeout(()=>{ centerEye.style.transform='translate(-50%,-50%) scale(1)'; centerEye.style.textShadow='0 0 6px rgba(255,210,80,0.9)'; }, 260);
+        }catch(e){ window.__appendLog('createRipple error: '+(e&&e.message),'error'); } }
+
+        function glyphBurst(x,y){ try{ const letters=['𓂀','ا','ل','ع','ر','ا','ب','777']; for(let i=0;i<letters.length;i++){ const angle = Math.random()*Math.PI*2; const speed = 4 + Math.random()*6; const vx = Math.cos(angle)*speed; const vy = Math.sin(angle)*speed; const temp = { x, y, vx, vy, life:1000, t:Date.now(), char: letters[i] }; (function anim(tobj){ const dt = Date.now() - tobj.t; if(dt > tobj.life) return; ctx.fillStyle = `rgba(255,230,160,${1 - dt/tobj.life})`; ctx.font = '18px monospace'; ctx.fillText(tobj.char, tobj.x, tobj.y); tobj.x += tobj.vx; tobj.y += tobj.vy; requestAnimationFrame(()=>anim(tobj)); })(temp); } }catch(e){ window.__appendLog('glyphBurst error: '+(e&&e.message),'error'); } }
+
+        function handleTap(x,y){ createRipple(x,y,1); playChime(880,0.08); navigator.vibrate&&navigator.vibrate(18); glyphBurst(x,y); const now = Date.now(); if(!window.__lastTap) window.__lastTap = now; else { if(now - window.__lastTap < 350) triggerComet(); window.__lastTap = now; } }
+
+        function activateBatSeal(x,y){ try{ const g = document.getElementById('glyphs'); const node = document.createElement('div'); node.style.position='fixed'; node.style.left = (x||cx)+'px'; node.style.top = (y||cy)+'px'; node.style.transform='translate(-50%,-50%)'; node.style.color='#ffd97a'; node.style.fontSize='18px'; node.style.padding='8px 12px'; node.style.borderRadius='8px'; node.style.background='rgba(0,0,0,0.45)'; node.style.border='1px solid rgba(255,215,0,0.08)'; node.innerText = '🔐 Bat Seal • 𓂀 𓆣 777'; g.appendChild(node); setTimeout(()=>{ node.style.transition='all .6s'; node.style.opacity=0; setTimeout(()=>node.remove(),700); },2800); playChime(520,0.18); navigator.vibrate&&navigator.vibrate(60); }catch(e){ window.__appendLog('activateBatSeal error: '+(e&&e.message),'error'); } }
+
+        // chime
+        function initAudioCtx(){ try{ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ audioCtx = null; } }
+        function playChime(freq=440, duration=0.12){ try{ initAudioCtx(); if(!audioCtx) return; const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type = 'sine'; o.frequency.value = freq; o.connect(g); g.connect(audioCtx.destination); g.gain.value = 0.0001; o.start(); g.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+duration); o.stop(audioCtx.currentTime+duration+0.02); }catch(e){} }
+
+        // mic
+        async function enableMic(){ if(micEnabled) return; try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); micStream = await navigator.mediaDevices.getUserMedia({ audio:true }); const src = audioCtx.createMediaStreamSource(micStream); analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048; src.connect(analyser); micEnabled = true; document.getElementById('micBtn').innerText='Mic: on'; window.__appendLog('Mic enabled', 'info'); }catch(e){ window.__appendLog('Mic enable failed: '+(e&&e.message),'warn'); } }
+        function disableMic(){ try{ if(micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream = null; } if(audioCtx){ audioCtx.close(); audioCtx=null; analyser=null; } micEnabled=false; document.getElementById('micBtn').innerText='Mic: off'; }catch(e){} }
+
+        document.getElementById('micBtn').addEventListener('click', ()=>{ if(micEnabled) disableMic(); else enableMic(); });
+
+        // explode/regroup
+        function explodeParticles(){ for(const p of particles){ p.vx = (Math.random()-0.5)*(8+Math.random()*16); p.vy = (Math.random()-0.5)*(8+Math.random()*16); } isExploded = true; nextCycle = Date.now() + getRandomDelay(); playChime(720,0.18); navigator.vibrate&&navigator.vibrate(40); window.__appendLog('Explode fired', 'info'); }
+        function regroupParticles(){ isExploded = false; nextCycle = Date.now() + getRandomDelay(); window.__appendLog('Regrouped', 'info'); }
+
+        document.getElementById('explodeBtn').addEventListener('click', explodeParticles);
+        document.getElementById('regenBtn').addEventListener('click', buildParticles);
+        document.getElementById('modeBtn').addEventListener('click', ()=>{ mode = mode==='interactive'?'calm':'interactive'; document.getElementById('modeBtn').innerText = 'وضع: '+(mode==='interactive'?'تفاعل':'هادئ'); if(mode==='calm'){ spacing = 12; fontSize = 10; } else { spacing = 6; fontSize = 14; } buildParticles(); });
+
+        // Test MetaMask connect behaviour (safe)
+        document.getElementById('testConnect').addEventListener('click', async ()=>{
+          try{
+            window.__appendLog('Attempting ethereum.request({method: "eth_requestAccounts"})', 'info');
+            const res = await (window.ethereum && window.ethereum.request ? window.ethereum.request({ method: 'eth_requestAccounts' }) : Promise.resolve([]));
+            window.__appendLog('ethereum.request returned: ' + JSON.stringify(res), 'info');
+          }catch(e){ window.__appendLog('ethereum.request threw: '+(e&&e.message), 'error'); }
+        });
+
+        // Simulate MetaMask Err (safe) — dispatch error event but don't create an uncaught rejection
+        document.getElementById('simulateErr').addEventListener('click', ()=>{
+          try{
+            const ev = new ErrorEvent('error', { message: 's: Failed to connect to MetaMask', filename: 'simulator', lineno: 1, colno: 1 });
+            window.dispatchEvent(ev);
+            window.__appendLog('Simulated MetaMask-like error event dispatched (no unhandled rejection).', 'warn');
+          }catch(e){ window.__appendLog('simulateErr failed: '+(e&&e.message),'error'); }
+        });
+
+        // expose debug helpers
+        window.__al_blackhole = { explodeParticles, buildParticles, triggerComet, enableMic, disableMic };
+
+        // initial build
+        buildParticles();
+
+      }catch(e){ window.__appendLog('Main initialization failed: '+(e&&e.message),'error'); }
+    })();
+
+  </script>
+</body>
+</html>
+

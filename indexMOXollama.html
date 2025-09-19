@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1 class="text-center">الصفحة الرئيسية</h1>
+<p class="lead">هنا يظهر الارتباطات</p>
+<div id="particles-js" class="particles-js"></div>
+
+<button class="btn btn-primary btn-lg" id="send-btn">إرسال طلب</button>
+
+<script src="https://cdn.jsdelivr.net/npm/particles-js@2.0.6/dist/particles.min.js"></script>
+<script>
+    window.particlesJS('particles-js', {
+  'name': 'particles-js',
+  'mobile': false,
+  'fullScreen': {'enable': true, 'fullScreenActive': false},
+  'interactivity': {'events': {'click': {'enable': true}}},
+  'effectsEnabled': true,
+  'mode': {'size_min': 150, 'opacity_min': 0.1},
+  'particles': {
+    'number': {'value': 200},
+    'color': ['rgba(34, 35, 41, 0.8)', 'rgba(34, 35, 41, 0.65)'],
+    'shape': 'circle',
+    'size': {'min': 3, 'max': 14},
+    'line_length': 150,
+    'line_width': 2,
+    'move_to_edge': {
+      'x': 1000,
+      'y': 1000
+    },
+    'rotate_x': null,
+    'rotate_y': null,
+    'angle': null,
+    'on_screen': {'quartile': 1},
+    'speed': {'min': 2.25, 'max': 3.5},
+    'scale': {'min': 0.3, 'max': 1.6},
+    'opacity': {'min': 0.04, 'max': 0.8},
+    'radius': 1,
+    'collision_threshold': 2,
+    'is_trapped': true,
+    'emitting': false,
+    'on_escape': null
+  },
+  'backgrounds': [
+    {
+      'kind': 'linear',
+      'location': 'center',
+      'color': []
+    }
+  ],
+  'border_color': '#000000',
+  'border_width': 2,
+  'particles_border_radius': 0,
+  'text': [
+    {
+      'color': '#ffffff',
+      'size': 24,
+      'x': 25,
+      'y': -40
+    }
+  ]
+});
+</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

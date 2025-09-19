@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixed Code</title>
+    <style>
+        /* Add some basic styles to our page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+            padding: 20px;
+        }
+        
+        .centerEye {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #007bff;
+        }
+        
+        .bat-seal {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border: 10px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Mixed Code</h1>
+    
+    <!-- Particle Simulation -->
+    <div id="particles-js"></div>
+
+    <!-- Ripple and Glyph Burst Effects -->
+    <button id="ripple-btn">Ripple Effect</button>
+    <div class="glyph-burst-container">
+        <span class="glyph-burst-item" style="background-color: #007bff; transform: translate(20px, 20px) scale(1.2);"></span>
+        <span class="glyph-burst-item" style="background-color: #dc3545; transform: translate(30px, 10px) rotate(-45deg);"></span>
+    </div>
+
+    <!-- Visual Reactions (Eye Flash) -->
+    <button id="eye-flash-btn">Eye Flash</button>
+    <div class="centerEye" style="background-color: #007bff;"></div>
+
+    <!-- Bat Seal Animation -->
+    <button id="bat-seal-btn">Bat Seal</button>
+    <div class="bat-seal"></div>
+
+    <!-- Chime Sound Effect -->
+    <button id="chime-btn">Play Chime</button>
+
+    <!-- Mic Integration -->
+    <input type="audio" id="mic-input" style="display: none;">
+    <button id="mic-btn">Enable/Mic</button>
+    <script>
+        // Initialize mic input
+        const micInput = document.getElementById('mic-input');
+        const enableMicBtn = document.getElementById('mic-btn');
+
+        enableMicBtn.addEventListener('click', () => {
+            if (enableMicBtn.textContent === 'Enable Mic') {
+                enableMicBtn.textContent = 'Disable Mic';
+                micInput.srcObject.getAudioTracks()[0].enabled = true;
+            } else {
+                enableMicBtn.textContent = 'Enable Mic';
+                micInput.srcObject.getAudioTracks()[0].enabled = false;
+            }
+        });
+    </script>
+
+    <!-- Expanding and Regrouping Particle Effects -->
+    <button id="explode-particles-btn">Explode Particles</button>
+    <button id="regroup-particles-btn">Regroup Particles</button>
+
+    <!-- Mode Switching -->
+    <button id="mode-switch-btn">Switch Modes</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles-js@2.0.6/dist/particles.min.js"></script>
+    <script>
+        // Initialize particle simulation
+        const particles = window.particlesJS.init({
+            container: document.getElementById('particles-js'),
+            maxParticles: 100,
+            randomColours: true,
+            attractToMouse: false,
+            connectToMouse: false,
+            responsiveFunc: 'window'
+        });
+
+        // Add event listeners for ripple effect
+        const rippleBtn = document.getElementById('ripple-btn');
+        rippleBtn.addEventListener('click', () => {
+            const rippleItem = document.createElement('div');
+            rippleItem.style.background = '#007bff';
+            rippleItem.style.transform = 'translate(20px, 20px) scale(1.2)';
+            document.querySelector('.glyph-burst-container').appendChild(rippleItem);
+        });
+
+        // Add event listeners for eye flash
+        const eyeFlashBtn = document.getElementById('eye-flash-btn');
+        eyeFlashBtn.addEventListener('click', () => {
+            const centerEye = document.querySelector('.centerEye');
+            centerEye.style.background = '#007bff';
+            window.__al_blackhole();
+        });
+
+        // Add event listeners for bat seal animation
+        const batSealBtn = document.getElementById('bat-seal-btn');
+        batSealBtn.addEventListener('click', () => {
+            const batSeal = document.querySelector('.bat-seal');
+            batSeal.style.width = '200px';
+            batSeal.style.height = '200px';
+            batSeal.style.borderRadius = '50%';
+            batSeal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+        });
+
+        // Add event listeners for chime sound effect
+        const chimeBtn = document.getElementById('chime-btn');
+        chimeBtn.addEventListener('click', () => {
+            // Initialize audio context and gain node
+            const audioCtx = new AudioContext();
+            const gainNode = audioCtx.createGain();
+
+            // Create oscillator
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.value = 200;
+            osc.connect(gainNode);
+            gainNode.gain.value = 0.5;
+
+            // Play chime sound
+            osc.start();
+            setTimeout(() => {
+                osc.stop();
+            }, 1000);
+
+            // Add event listener for mic input
+            const micInput = document.getElementById('mic-input');
+            micInput.addEventListener('audioprocess', (e) => {
+                gainNode.gain.value += e.inputBuffer.getChannelData(0).reduce((sum, value) => sum + Math.abs(value), 0) / 32767;
+            });
+        });
+
+        // Add event listeners for explode particles
+        const explodeParticlesBtn = document.getElementById('explode-particles-btn');
+        explodeParticlesBtn.addEventListener('click', () => {
+            for (let i = 0; i < 10; i++) {
+                const particleItem = document.createElement('div');
+                particleItem.style.width = `${Math.random() * 50}px`;
+                particleItem.style.height = `${Math.random() * 50}px`;
+                particleItem.style.background = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                particleItem.style.transform = `translate(${Math.random() * 500}px, ${Math.random() * 500}px) scale(${Math.random() * 2 + 1})`;
+                document.querySelector('.glyph-burst-container').appendChild(particleItem);
+            }
+        });
+
+        // Add event listeners for regroup particles
+        const regroupParticlesBtn = document.getElementById('regroup-particles-btn');
+        regroupParticlesBtn.addEventListener('click', () => {
+            for (let i = 0; i < 10; i++) {
+                const particleItem = document.querySelector('.glyph-burst-container').children[i];
+                if (particleItem) {
+                    particleItem.style.width = `${Math.random() * 50}px`;
+                    particleItem.style.height = `${Math.random() * 50}px`;
+                    particleItem.style.background = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                    particleItem.style.transform = `translate(${Math.random() * 500}px, ${Math.random() * 500}px) scale(${Math.random() * 2 + 1})`;
+                }
+            }
+        });
+
+        // Add event listeners for mode switch
+        const modeSwitchBtn = document.getElementById('mode-switch-btn');
+        modeSwitchBtn.addEventListener('click', () => {
+            // Change font size and spacing
+            document.body.style.fontSize = '24px';
+            document.body.style.margin = '20px';
+
+            // Switch between interactive and calm modes
+            if (window.__al_blackhole()) {
+                window.__al_blackhole();
+            } else {
+                window.__al_blackhole();
+            }
+        });
+    </script>
+</body>
+</html>

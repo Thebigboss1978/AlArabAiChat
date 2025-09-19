@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جولات العرّاب - أفضل الجولات السياحية في مصر</title>
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="اكتشف مصر مع جولات العرّاب - أفضل الجولات السياحية للأهرامات والمعالم التاريخية مع أدلة سياحيين محترفين">
+    <meta name="keywords" content="جولات مصر، الأهرامات، السياحة في مصر، جولات سياحية، أبو الهول، المتحف المصري">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="جولات العرّاب - اكتشف مصر">
+    <meta property="og:description" content="أفضل الجولات السياحية في مصر مع العرّاب">
+    <meta property="og:type" content="website">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>جاري تحميل الجولات...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-mountain"></i>
+                    <h1>جولات العرّاب</h1>
+                    <span class="tagline">اكتشف مصر معنا</span>
+                </div>
+                <nav class="nav">
+                    <a href="#tours" class="nav-link">الجولات</a>
+                    <a href="#chat" class="nav-link">الدردشة</a>
+                    <a href="#contact" class="nav-link">التواصل</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h2 class="hero-title">
+                        مرحباً بكم في عالم الأهرامات 🏛️
+                    </h2>
+                    <p class="hero-description">
+                        اكتشف أسرار الحضارة المصرية القديمة مع جولاتنا المميزة
+                        <br>
+                        أدلة محترفون • مواصلات مريحة • أسعار مناسبة
+                    </p>
+                    <div class="hero-buttons">
+                        <button onclick="scrollToSection('tours')" class="btn btn-primary">
+                            <i class="fas fa-map-marked-alt"></i>
+                            اختر جولتك
+                        </button>
+                        <button onclick="scrollToSection('chat')" class="btn btn-secondary">
+                            <i class="fas fa-comments"></i>
+                            تحدث معنا
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="search">
+        <div class="container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="ابحث عن الجولة المناسبة لك..."
+                    onkeyup="handleSearch()"
+                >
+                <button onclick="clearSearch()" class="clear-btn" id="clearBtn" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tours Section -->
+    <section class="tours-section" id="tours">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-route"></i>
+                    جولاتنا المتاحة
+                </h2>
+                <p class="section-subtitle">اختر من مجموعة واسعة من الجولات المميزة</p>
+            </div>
+
+            <!-- Tours Grid -->
+            <div id="toursContainer" class="tours-grid">
+                <!-- Tours will be loaded here dynamically -->
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>لا توجد نتائج</h3>
+                <p>لم نجد جولات تطابق بحثك. جرب كلمات أخرى أو تصفح جميع الجولات.</p>
+                <button onclick="clearSearch()" class="btn btn-primary">عرض جميع الجولات</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section class="chat-section" id="chat">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-robot"></i>
+                    دردش مع مساعدنا الذكي
+                </h2>
+                <p class="section-subtitle">احصل على إجابات فورية لأسئلتك</p>
+            </div>
+
+            <div class="chat-container">
+                <!-- Chat Messages -->
+                <div id="chatMessages" class="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-text">
+                                <strong>مساعد العرّاب:</strong>
+                                أهلاً وسهلاً! 👋 أنا هنا لمساعدتك في اختيار الجولة المناسبة. 
+                                اسألني عن أي شيء تريد معرفته!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <div class="chat-input-box">
+                        <input 
+                            type="text" 
+                            id="chatInput" 
+                            placeholder="اكتب رسالتك هنا..."
+                            onkeypress="handleChatKeyPress(event)"
+                        >
+                        <button onclick="sendChatMessage()" id="sendBtn" class="send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>تواصل معنا مباشرة</h3>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>واتساب: متاح 24/7</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>ساعات العمل: 8:00 ص - 10:00 م</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>نقدم خدمة النقل من جميع فنادق القاهرة والجيزة</span>
+                    </div>
+                </div>
+                <div class="contact-features">
+                    <h3>لماذا تختار العرّاب؟</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> أدلة سياحيون معتمدون</li>
+                        <li><i class="fas fa-check"></i> مواصلات مكيفة ومريحة</li>
+                        <li><i class="fas fa-check"></i> أسعار شفافة بدون رسوم خفية</li>
+                        <li><i class="fas fa-check"></i> خدمة عملاء متاحة 24/7</li>
+                        <li><i class="fas fa-check"></i> تجربة سياحية لا تُنسى</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>جولات العرّاب</h4>
+                    <p>شريكك المثالي لاستكشاف عجائب مصر</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#tours">الجولات</a>
+                    <a href="#chat">الدردشة</a>
+                    <a href="#contact">التواصل</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 جولات العرّاب. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="toast error-toast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorMessage"></span>
+        <button onclick="hideToast()" class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast success-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="successMessage"></span>
+        <button onclick="hideToast()" class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
